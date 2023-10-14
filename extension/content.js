@@ -12,5 +12,13 @@ chrome.runtime.onMessage.addListener(
         highlight.style.position = 'absolute';
         highlight.style.backgroundColor = 'green';
         highlight.style.height = '5px';
+        highlight.style.width = '100%';
+        highlight.style.top = '0px';
+        highlight.style.left = '0px';
+        highlight.style.zIndex = '1000';
+        highlight.style.height = '100%';
+
+        progressBarContainer.appendChild(highlight);
+
     }
   );
