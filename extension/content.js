@@ -2,6 +2,8 @@
 
 chrome.runtime.onMessage.addListener(
     (request, sender, sendResponse) => {
+
+        console.log("received message")
   
         timestamp1 = request.timestamp1;
         timestamp2 = request.timestamp2;
@@ -18,7 +20,10 @@ chrome.runtime.onMessage.addListener(
         highlight.style.zIndex = '1000';
         highlight.style.height = '100%';
 
+        console.log("appending highlight")
         progressBarContainer.appendChild(highlight);
 
+        console.log("returning true")
+        return true;
     }
   );

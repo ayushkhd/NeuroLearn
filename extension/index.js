@@ -69,8 +69,10 @@ const getActiveTabUrl = () => {
 const submitTimestamps = () => {
   const timestamp1 = document.getElementById('timestamp1').value;
   const timestamp2 = document.getElementById('timestamp2').value;
+  console.log("found timestamps")
 
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    console.log("sending message")
     chrome.tabs.sendMessage(
       { timestamp1: timestamp1, timestamp2: timestamp2 },
       (response) => {
