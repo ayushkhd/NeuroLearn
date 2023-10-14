@@ -24,6 +24,6 @@ chrome.runtime.onMessage.addListener(
         progressBarContainer.appendChild(highlight);
 
         console.log("returning true")
-        return true;
+        sendResponse({ status: 'success' });
     }
   );
