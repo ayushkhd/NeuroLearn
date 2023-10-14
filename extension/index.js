@@ -70,17 +70,21 @@ const submitTimestamps = () => {
   const timestamp1 = document.getElementById('timestamp1').value;
   const timestamp2 = document.getElementById('timestamp2').value;
   console.log("found timestamps")
-  const activeTab = tabs[0].id;
 
 
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    const activeTab = tabs[0].id;
     console.log("sending message")
     chrome.tabs.sendMessage(
       activeTab,
       { message: timestamp1, content: timestamp2 },
       (response) => {
-        if (response.status === 'failed') {
-          console.log('injection failed.');
+        if(response) {
+          if (response.status === 'failed') {
+            console.log('injection failed.');
+          }
+        } else {
+          console.log('No response received.');
         }
       }
     );

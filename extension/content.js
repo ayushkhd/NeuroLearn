@@ -1,12 +1,13 @@
-
+console.log("Content script has loaded and is running!");
 
 chrome.runtime.onMessage.addListener(
     (request, sender, sendResponse) => {
 
         console.log("received message")
   
-        timestamp1 = request.timestamp1;
-        timestamp2 = request.timestamp2;
+        timestamp1 = request.message;
+        timestamp2 = request.content;
+
 
         const progressBarContainer = document.getElementsByClassName('ytp-progress-bar-container');
 
@@ -21,7 +22,9 @@ chrome.runtime.onMessage.addListener(
         highlight.style.height = '100%';
 
         console.log("appending highlight")
-        progressBarContainer.appendChild(highlight);
+        if(progressBarContainer.length > 0) {
+            progressBarContainer[0].appendChild(highlight);
+          }
 
         console.log("returning true")
         sendResponse({ status: 'success' });
