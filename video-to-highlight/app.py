@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from fastapi import BaseModel
+from pydantic import BaseModel
 
 app = FastAPI()
 

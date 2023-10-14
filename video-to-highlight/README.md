@@ -2,14 +2,7 @@
 
 ## Video to Highlights API
 
-```python
-
-# Convert video to a few highlight reels
-
-
-```
-
-
+Get personalised video highlights explaining why it's important or useful.
 
 ```
 POST /videoHighlight
