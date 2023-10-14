@@ -1,6 +1,6 @@
 {
-  "name": "Ask Youtube Vid",
-  "description": "Enter API key, open a YT vid, then ask any question!",
+  "name": "Personal Tutor",
+  "description": "Have AI teach you better!",
   "version": "1.0",
   "manifest_version": 3,
   "icons": {
