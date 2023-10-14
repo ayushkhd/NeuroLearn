@@ -66,6 +66,29 @@ const getActiveTabUrl = () => {
   });
 }
 
+const submitTimestamps = () => {
+  const timestamp1 = document.getElementById('timestamp1').value;
+  const timestamp2 = document.getElementById('timestamp2').value;
+
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    
+
+    chrome.tabs.sendMessage(
+      { timestamp1: timestamp1, timestamp2: timestamp2 },
+      (response) => {
+        if (response.status === 'failed') {
+          console.log('injection failed.');
+        }
+      }
+    );
+    //console.log(tabs[0].url);
+  });
+
+
+
+
+}
+
 
 const changeKey = () => {
 document.getElementById('key_needed').style.display = 'block';
@@ -78,6 +101,8 @@ document
 .addEventListener('click', changeKey);
 
 document.getElementById('submit-question').addEventListener('click', submitQuestion);
+
+document.getElementById('submit-timestamps').addEventListener('click', submitTimestamps);
 
 checkForKey().then((response) => {
     if (response) {
