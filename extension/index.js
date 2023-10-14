@@ -71,8 +71,6 @@ const submitTimestamps = () => {
   const timestamp2 = document.getElementById('timestamp2').value;
 
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-    
-
     chrome.tabs.sendMessage(
       { timestamp1: timestamp1, timestamp2: timestamp2 },
       (response) => {

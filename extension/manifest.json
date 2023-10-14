@@ -13,5 +13,9 @@
     "default_popup": "index.html",
     "default_title": "Ask YT vid"
   },
-  "permissions": ["contextMenus", "tabs", "storage", "activeTab"]
+  "permissions": ["contextMenus", "tabs", "storage", "activeTab"],
+  "content_scripts": [{
+    "matches": ["http://*/*", "https://*/*"],
+    "js": ["content.js"]
+  }]
 }
