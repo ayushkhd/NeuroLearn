@@ -53,6 +53,8 @@ const submitQuestion = async () => {
   }
 }
 
+
+
 const getActiveTabUrl = () => {
   return new Promise((resolve, reject) => {
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -62,6 +64,36 @@ const getActiveTabUrl = () => {
           resolve(tabs[0].url);
       });
   });
+}
+
+const submitTimestamps = () => {
+  const timestamp1 = document.getElementById('timestamp1').value;
+  const timestamp2 = document.getElementById('timestamp2').value;
+  console.log("found timestamps")
+
+
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    const activeTab = tabs[0].id;
+    console.log("sending message")
+    chrome.tabs.sendMessage(
+      activeTab,
+      { message: timestamp1, content: timestamp2 },
+      (response) => {
+        if(response) {
+          if (response.status === 'failed') {
+            console.log('injection failed.');
+          }
+        } else {
+          console.log('No response received.');
+        }
+      }
+    );
+    //console.log(tabs[0].url);
+  });
+
+
+
+
 }
 
 
@@ -76,6 +108,8 @@ document
 .addEventListener('click', changeKey);
 
 document.getElementById('submit-question').addEventListener('click', submitQuestion);
+
+document.getElementById('submit-timestamps').addEventListener('click', submitTimestamps);
 
 checkForKey().then((response) => {
     if (response) {
