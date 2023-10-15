@@ -191,13 +191,18 @@ function createNeuroLearnElement() {
     container.style.zIndex = '99999999';
 
     // Title
+    const titleContainer = document.createElement('div');
+    titleContainer.style.display = 'flex';
+    titleContainer.style.justifyContent = 'space-between';
+    titleContainer.style.alignItems = 'center';
+
     const title = document.createElement('h2');
     title.style.fontSize = '30px';
     title.style.marginTop = '10px';
     title.style.marginLeft = '10px';
     title.textContent = 'NeuroLearn';
     title.style.color = '#FFFFFF';  // Adjust title color as needed
-    container.appendChild(title);
+    titleContainer.appendChild(title);
 
     const blobSvg = document.createElement('div');
     blobSvg.id = 'blob_svg';
@@ -205,11 +210,13 @@ function createNeuroLearnElement() {
 
     const blobImage = document.createElement('img');
     blobImage.id = 'blob_image';
-    blobImage.src = 'https://gist.githubusercontent.com/ColabDog/be2c2c3dae7d31fd668783c480e7ebec/raw/14f5ebb6957e5ace159b5d05e986f36e2a32f801/blue_blob.svg';
+    blobImage.src = 'https://gist.githubusercontent.com/ColabDog/be2c2c3dae7d31fd668783c480e7ebec/raw/d63bc5aaa982da97bf083b391ca54638b6fbc4f7/blue_blob.svg';
     blobImage.alt = 'Blob SVG';
 
     blobSvg.appendChild(blobImage);
-    container.appendChild(blobSvg);
+    titleContainer.appendChild(blobSvg);
+
+    container.appendChild(titleContainer);
 
 
     // Highlights
