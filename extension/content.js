@@ -443,6 +443,7 @@ function createNeuroLearnElement(highlights, url) {
     aiCoach.style.height = '100%'; // Add this line to make the text vertically centered
     aiCoach.style.boxShadow = '0px 4px 8px 0px rgba(0, 0, 0, 0.2)'; // Add drop shadow
     aiCoach.style.padding = '10px 20px';
+    flexDiv.style.marginRight = '20px';
 
 
 
