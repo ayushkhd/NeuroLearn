@@ -14,17 +14,16 @@ function secondsToTime(seconds) {
 chrome.runtime.onMessage.addListener(
     (request, sender, sendResponse) => {
 
-        console.log(request.url)
+        console.log(request.message)
 
-        fetchElementAndParent(request.url);
+        fetchElementAndParentDupe(request.message);
 
 
         sendResponse({ status: 'success' });
 
     })
 
-generateOutputs = (context, url) => {
-
+    generateOutputs = (context, url) => {
         console.log(url)
 
         const player = document.getElementById("movie_player");
