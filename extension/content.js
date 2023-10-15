@@ -106,7 +106,7 @@ chrome.runtime.onMessage.addListener(
 
 
                     });
-                    let result = fetchElementAndParent(data.highlights);
+                    let result = fetchElementAndParent(data.highlights, url);
                     if (result) {
                         console.log("Filtered element:", result.filteredElement);
                         console.log("Parent of filtered element:", result.parentElement);
@@ -127,7 +127,7 @@ chrome.runtime.onMessage.addListener(
 
 
 
-function fetchElementAndParent(highlights) {
+function fetchElementAndParent(highlights, url) {
     // Fetch the specific div element with the given class and ID
     let filteredElement = document.querySelector('div#neurolearn_container');
     if (!filteredElement) {
@@ -144,7 +144,7 @@ function fetchElementAndParent(highlights) {
         console.log("boutta remove")
         filteredElement.remove();
 
-        const neuroLearnElement = createNeuroLearnElement(highlights);
+        const neuroLearnElement = createNeuroLearnElement(highlights, url);
         parentElement.appendChild(neuroLearnElement);
 
         return {
@@ -175,7 +175,7 @@ function createCircularElement(number) {
     return circle;
 }
 
-function createNeuroLearnElement(highlights) {
+function createNeuroLearnElement(highlights, url) {
     const container = document.createElement('div');
     container.id = 'neurolearn_container';
     container.style.background = 'linear-gradient(to bottom right, #2596be, #183d6e)';  // Gradient from #2596be to #183d6e at the low bottom right
@@ -218,6 +218,21 @@ function createNeuroLearnElement(highlights) {
 
     container.appendChild(titleContainer);
 
+    const contextInput = document.createElement('input');
+    contextInput.type = 'text';
+    contextInput.name = 'context';
+    contextInput.id = 'context';
+    contextInput.placeholder = 'Enter new context here';
+    container.appendChild(contextInput);
+
+    const submitButton = document.createElement('button');
+    submitButton.type = 'submit';
+    submitButton.textContent = 'Submit';
+    submitButton.addEventListener('click', function() {
+        generateOutputs(contextInput.value, url);
+    });
+
+    container.appendChild(submitButton);
 
     // Highlights
     highlights.forEach((item, index) => {
