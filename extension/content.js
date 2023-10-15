@@ -13,9 +13,13 @@ function secondsToTime(seconds) {
 
 chrome.runtime.onMessage.addListener(
     (request, sender, sendResponse) => {
-        
+
+        console.log(request.url)
+
+        fetchElementAndParent(request.url);
 
 
+        sendResponse({ status: 'success' });
 
     })
 
@@ -118,9 +122,13 @@ chrome.runtime.onMessage.addListener(
             });
 
 
-        sendResponse({ status: 'success' });
     }
 );
+
+
+
+
+
 
 function fetchElementAndParent(highlights) {
     // Fetch the specific div element with the given class and ID
@@ -435,3 +443,96 @@ pingAIQuestion = () => {
             });
 
 }
+
+
+
+
+
+
+
+function fetchElementAndParentDupe(url) {
+    // Fetch the specific div element with the given class and ID
+    let filteredElement = document.querySelector('div.style-scope.ytd-watch-flexy#secondary');
+    console.log("inside function")
+
+    if (filteredElement) {
+        // Get the parent of the filtered element
+        let parentElement = filteredElement.parentElement;
+
+        // Remove the filtered element from the DOM
+        console.log("boutta remove")
+        filteredElement.remove();
+
+        const neuroLearnElement = createNeuroLearnElementDupe(url);
+        parentElement.appendChild(neuroLearnElement);
+
+        return {
+            filteredElement: filteredElement,
+            parentElement: parentElement
+        };
+    } else {
+        return null;
+    }
+}
+
+function createNeuroLearnElementDupe(url) {
+    const container = document.createElement('div');
+    container.id = 'neurolearn_container';
+    container.style.background = 'linear-gradient(to bottom right, #2596be, #183d6e)';  // Gradient from #2596be to #183d6e at the low bottom right
+    container.style.borderRadius = '10px';
+    container.style.width = '28%';  // Adjust width as needed
+    container.style.marginBottom = '20px';
+    container.style.zIndex = '99999999';
+
+    // Title
+    const titleContainer = document.createElement('div');
+    titleContainer.style.display = 'flex';
+    titleContainer.style.justifyContent = 'space-between';
+    titleContainer.style.alignItems = 'center';
+    titleContainer.style.marginBottom = '20px';
+
+    const title = document.createElement('h2');
+    title.style.fontSize = '30px';
+    title.style.marginTop = '10px';
+    title.style.marginLeft = '10px';
+    title.textContent = 'NeuroLearn';
+    title.style.color = '#FFFFFF';  // Adjust title color as needed
+    titleContainer.appendChild(title);
+    titleContainer.style.marginRight = '10px';
+    titleContainer.style.marginTop = '10px';
+
+    const blobSvg = document.createElement('div');
+    blobSvg.id = 'blob_svg';
+    blobSvg.style.display = 'block'; // Ensure the SVG is displayed
+
+    const blobImage = document.createElement('img');
+    blobImage.id = 'blob_image';
+    blobImage.src = 'https://gist.githubusercontent.com/ColabDog/be2c2c3dae7d31fd668783c480e7ebec/raw/d63bc5aaa982da97bf083b391ca54638b6fbc4f7/blue_blob.svg';
+    blobImage.alt = 'Blob SVG';
+
+    // Add CSS animation to make the SVG zoom in and out
+    blobImage.style.animation = 'zoomInOut 2s infinite';
+
+    blobSvg.appendChild(blobImage);
+    titleContainer.appendChild(blobSvg);
+
+    container.appendChild(titleContainer);
+
+    const contextInput = document.createElement('input');
+    contextInput.type = 'text';
+    contextInput.name = 'context';
+    contextInput.id = 'context';
+    contextInput.placeholder = 'Enter your context here';
+    container.appendChild(contextInput);
+
+    const submitButton = document.createElement('button');
+    submitButton.type = 'submit';
+    submitButton.textContent = 'Submit';
+    submitButton.addEventListener('click', function() {
+        generateOutputs(contextInput.value, url);
+    });
+    container.appendChild(submitButton);
+
+    return container;
+}
+
