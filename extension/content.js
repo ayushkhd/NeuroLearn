@@ -211,7 +211,7 @@ function createNeuroLearnElement(highlights, url) {
     container.style.borderRadius = '10px';
     container.style.width = '28%';  // Adjust width as needed
     container.style.marginBottom = '20px';
-    container.style.zIndex = '99999999';
+    container.style.zIndex = '31';
 
     // Title
     const titleContainer = document.createElement('div');
@@ -619,7 +619,7 @@ function createNeuroLearnElementDupe(url) {
     container.style.borderRadius = '10px';
     container.style.width = '28%';  // Adjust width as needed
     container.style.marginBottom = '20px';
-    container.style.zIndex = '99999999';
+    container.style.zIndex = '31';
 
     // Title
     const titleContainer = document.createElement('div');
