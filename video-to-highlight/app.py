@@ -52,6 +52,7 @@ class Highlight(BaseModel):
     end_time: int
     highlight: str
     reason_for_highlight: str
+    question: str
 
 class VideoHighlightResponse(BaseModel):
     highlights: List[Highlight]
