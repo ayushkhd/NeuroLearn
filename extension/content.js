@@ -200,24 +200,43 @@ function createNeuroLearnElement() {
     // Highlights
     for (let i = 0; i < 3; i++) {
         const highlight = document.createElement('div');
-        highlight.textContent = `Highlight 1 - Get the space`;
-        highlight.style.marginTop = '30px';
-        highlight.style.marginBottom = '30px';
-        highlight.style.fontSize = '15px';
-        highlight.style.color = '#FFFFFF';  // Adjust highlight color as needed
+        
+        // Set the translucent bubble styles for each highlight
+        highlight.style.background = 'rgba(255, 255, 255, 0.8)'; // More opaque than before
+        highlight.style.borderRadius = '20px'; // More rounded corners
+        highlight.style.padding = '10px 20px'; 
+        highlight.style.marginBottom = '15px';
+        highlight.style.display = 'flex';
+        highlight.style.justifyContent = 'space-between';
+        highlight.style.alignItems = 'center';
+        
+        const text = document.createElement('span');
+        text.textContent = `Highlight 1 - Get the space`;
+        text.style.fontSize = '18px';
+        highlight.appendChild(text);
+        
+        const percentage = document.createElement('span');
+        percentage.textContent = i === 0 ? '75%' : '20%';
+        percentage.style.background = i === 0 ? 'limegreen' : 'red';
+        percentage.style.borderRadius = '50%';
+        percentage.style.padding = '5px 15px';
+        percentage.style.color = 'white';
+        percentage.style.fontSize = '18px';
+        highlight.appendChild(percentage);
+        
         container.appendChild(highlight);
     }
 
-    // Ask your AI coach button
-    const aiCoachButton = document.createElement('button');
-    aiCoachButton.textContent = 'Ask your AI coach...';
-    aiCoachButton.style.background = '#4C33E5';  // Adjust button colors as needed
-    aiCoachButton.style.color = 'white';
-    aiCoachButton.style.padding = '10px 20px';
-    aiCoachButton.style.border = 'none';
-    aiCoachButton.style.borderRadius = '5px';
-    aiCoachButton.style.cursor = 'pointer';
-    container.appendChild(aiCoachButton);
+    const aiCoach = document.createElement('div');
+    aiCoach.style.background = 'rgba(255, 255, 255, 0.8)';
+    aiCoach.style.borderRadius = '20px';
+    aiCoach.style.padding = '10px 20px';
+    aiCoach.style.marginTop = '15px';
+    aiCoach.textContent = 'Ask your AI coach...';
+    aiCoach.style.fontSize = '20px';
+    aiCoach.style.textAlign = 'center';
+
+    container.appendChild(aiCoach);
 
     return container;
 }
