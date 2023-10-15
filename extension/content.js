@@ -242,17 +242,39 @@ function createNeuroLearnElement() {
         container.appendChild(highlight);
     }
 
-    const aiCoach = document.createElement('div');
+    const flexDiv = document.createElement('div');
+    flexDiv.style.display = 'flex';
+    flexDiv.style.justifyContent = 'space-between';
+    flexDiv.style.alignItems = 'center';
+
+    const aiCoach = document.createElement('input');
+    aiCoach.type = 'text';
     aiCoach.style.background = 'rgba(255, 255, 255, 0.8)';
     aiCoach.style.borderRadius = '20px';
     aiCoach.style.padding = '10px 20px';
     aiCoach.style.marginTop = '15px';
-    aiCoach.textContent = 'Ask your AI coach...';
+    aiCoach.placeholder = 'Ask your AI coach...';
     aiCoach.style.fontSize = '20px';
     aiCoach.style.textAlign = 'center';
 
-    container.appendChild(aiCoach);
+    const aiCoachButton = document.createElement('button');
+    aiCoachButton.textContent = 'Send';
+    aiCoachButton.style.background = '#8B5DF8';
+    aiCoachButton.style.color = 'white';
+    aiCoachButton.style.borderRadius = '20px';
+    aiCoachButton.style.padding = '10px 20px';
+    aiCoachButton.style.marginTop = '15px';
+    aiCoachButton.style.fontSize = '20px';
+    aiCoachButton.style.border = 'none';
+    aiCoachButton.style.cursor = 'pointer';
+    aiCoachButton.style.outline = 'none';
+    aiCoachButton.style.fontWeight = 'bold';
 
+
+    flexDiv.appendChild(aiCoach);
+    flexDiv.appendChild(aiCoachButton);
+
+    container.appendChild(flexDiv);
     return container;
 }
 
