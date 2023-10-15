@@ -58,6 +58,12 @@ function timeToSeconds(timeString) {
     return minutes * 60 + seconds;
 }
 
+function secondsToTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+}
+
 
 chrome.runtime.onMessage.addListener(
     (request, sender, sendResponse) => {
@@ -72,7 +78,7 @@ chrome.runtime.onMessage.addListener(
         };
 
 
-        fetch('https://30a0-12-94-170-82.ngrok-free.app/videoHighlight/', {
+        fetch('https://166a-12-94-170-82.ngrok-free.app/videoHighlight/', {
             // fetch('http://localhost:8000/videoHighlight/', {
             method: 'POST',
             headers: {
@@ -128,19 +134,20 @@ chrome.runtime.onMessage.addListener(
 
 
 
-                        let result = fetchElementAndParent();
-                        if (result) {
-                            console.log("Filtered element:", result.filteredElement);
-                            console.log("Parent of filtered element:", result.parentElement);
-                        } else {
-                            console.log("Element not found");
-                        }
+                        
 
 
 
 
 
                     });
+                    let result = fetchElementAndParent(data.highlights);
+                        if (result) {
+                            console.log("Filtered element:", result.filteredElement);
+                            console.log("Parent of filtered element:", result.parentElement);
+                        } else {
+                            console.log("Element not found");
+                        }
                 }
             })
             .catch((error) => {
@@ -152,7 +159,7 @@ chrome.runtime.onMessage.addListener(
     }
 );
 
-function fetchElementAndParent() {
+function fetchElementAndParent(highlights) {
     // Fetch the specific div element with the given class and ID
     let filteredElement = document.querySelector('div.style-scope.ytd-watch-flexy#secondary');
     console.log("inside function")
@@ -165,7 +172,7 @@ function fetchElementAndParent() {
         console.log("boutta remove")
         filteredElement.remove();
 
-        const neuroLearnElement = createNeuroLearnElement();
+        const neuroLearnElement = createNeuroLearnElement(highlights);
         parentElement.appendChild(neuroLearnElement);
 
         return {
@@ -181,7 +188,7 @@ function fetchElementAndParent() {
 console.log("calling func")
 
 
-function createNeuroLearnElement() {
+function createNeuroLearnElement(highlights) {
     const container = document.createElement('div');
     container.style.background = 'linear-gradient(#8B5DF8, white)';  // Gradient from purple to white
     container.style.padding = '10px';
@@ -220,7 +227,7 @@ function createNeuroLearnElement() {
 
 
     // Highlights
-    for (let i = 0; i < 3; i++) {
+    highlights.forEach((item, index) => {
         const highlight = document.createElement('div');
 
         // Set the translucent bubble styles for each highlight
@@ -232,14 +239,17 @@ function createNeuroLearnElement() {
         highlight.style.justifyContent = 'space-between';
         highlight.style.alignItems = 'center';
 
+        start_time = secondsToTime(item.start_time);
+        end_time = secondsToTime(item.end_time);
+
         const text = document.createElement('span');
-        text.textContent = `Highlight 1 - Get the space`;
+        text.textContent = `Highlight ${index + 1}: ${start_time} - ${end_time}`;
         text.style.fontSize = '18px';
         highlight.appendChild(text);
 
         const percentage = document.createElement('span');
-        percentage.textContent = i === 0 ? '75%' : '20%';
-        percentage.style.background = i === 0 ? 'limegreen' : 'red';
+        percentage.textContent = index === 0 ? '75%' : '20%';
+        percentage.style.background = index === 0 ? 'limegreen' : 'red';
         percentage.style.borderRadius = '50%';
         percentage.style.padding = '5px 5px';
         percentage.style.color = 'white';
@@ -248,6 +258,7 @@ function createNeuroLearnElement() {
 
         container.appendChild(highlight);
     }
+    )
 
     const flexDiv = document.createElement('div');
     flexDiv.style.display = 'flex';
