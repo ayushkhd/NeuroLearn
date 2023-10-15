@@ -269,6 +269,10 @@ function createNeuroLearnElement(highlights) {
         percentage.style.fontSize = '18px';
         highlight.appendChild(percentage);
 
+        highlight.addEventListener('click', function() {
+            document.getElementsByTagName('video')[0].currentTime = item.start_time;
+        });
+
         container.appendChild(highlight);
     }
     )
