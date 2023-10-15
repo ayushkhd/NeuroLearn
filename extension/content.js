@@ -286,11 +286,11 @@ function createNeuroLearnElement(highlights) {
         container.appendChild(highlight);
 
         const description = document.createElement('div');
-        const fullText = item.reason_for_highlight;
+
+        const fullText = "<b>Highlight</b>: " + item.highlight + "<br><b>Reason for highlight</b>: " + item.reason_for_highlight;
         const shortText = fullText.length > 100 ? fullText.substr(0, 97) + '...' : fullText;
 
-
-        description.textContent = shortText;
+        description.innerHTML = shortText; // Use innerHTML instead of textContent to parse HTML tags
         description.style.color = 'white';
         description.style.marginBottom = '15px';
         description.style.marginLeft = '20px';
@@ -303,7 +303,7 @@ function createNeuroLearnElement(highlights) {
         readMore.style.color = '#00d4ff';
         readMore.style.cursor = 'pointer';
         readMore.addEventListener('click', function () {
-            description.textContent = fullText;
+            description.innerHTML = fullText;
             readMore.style.display = 'none';
         });
 
@@ -337,6 +337,8 @@ function createNeuroLearnElement(highlights) {
         container.appendChild(description);
     }
     )
+
+
 
     const flexDiv = document.createElement('div');
     flexDiv.style.display = 'flex';
