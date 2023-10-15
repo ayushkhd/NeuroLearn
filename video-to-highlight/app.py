@@ -52,7 +52,7 @@ class Highlight(BaseModel):
     end_time: int
     highlight: str
     reason_for_highlight: str
-    question: str
+    questions: list
 
 class VideoHighlightResponse(BaseModel):
     highlights: List[Highlight]
@@ -73,7 +73,7 @@ def highlight_video(video: VideoHighlight):
                 end_time=1065,
                 highlight="The span of any set of vectors is a valid subspace",
                 reason_for_highlight="The video explains that the span of any set of vectors is a valid subspace, using examples and mathematical explanations.",
-                question="What makes the span of any set of vectors a valid subspace?"
+                questions=["What makes the span of any set of vectors a valid subspace?"]
             ),
             Highlight(
                 order_number=2,
@@ -81,7 +81,7 @@ def highlight_video(video: VideoHighlight):
                 end_time=1350,
                 highlight="The span of one vector is not always a valid subspace",
                 reason_for_highlight="The video demonstrates that the span of one vector is not always a valid subspace, using visuals and mathematical explanations.",
-                question="Under what conditions would the span of one vector not be a valid subspace?"
+                questions=["Under what conditions would the span of one vector not be a valid subspace?"]
             ),
             Highlight(
                 order_number=3,
@@ -89,7 +89,7 @@ def highlight_video(video: VideoHighlight):
                 end_time=465,
                 highlight="The zero vector is always contained in a subspace",
                 reason_for_highlight="The video explains that the zero vector is always contained in a subspace, regardless of the vector set.",
-                question="Why is the zero vector always contained in a subspace?"
+                questions=["Why is the zero vector always contained in a subspace?"]
             )
         ]
     )

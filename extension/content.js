@@ -4,7 +4,7 @@ console.log("Content script has loaded and is running!");
 //     (request, sender, sendResponse) => {
 
 //         console.log("received message")
-  
+
 //         // const timestamp1 = request.message;
 //         // const timestamp2 = request.content;
 
@@ -47,13 +47,13 @@ console.log("Content script has loaded and is running!");
 
 
 
-        
+
 //         console.log("returning true")
 //         sendResponse({ status: 'success' });
 //     }
 //   );
 
-  function timeToSeconds(timeString) {
+function timeToSeconds(timeString) {
     const [minutes, seconds] = timeString.split(":").map(Number);
     return minutes * 60 + seconds;
 }
@@ -70,89 +70,89 @@ chrome.runtime.onMessage.addListener(
             videoToHighlight: request.url,
             objective: 'Generate a summary suitable for a software engineer building video search.',
         };
-        
-  
+
+
         fetch('https://30a0-12-94-170-82.ngrok-free.app/videoHighlight/', {
+            // fetch('http://localhost:8000/videoHighlight/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(videoHighlight),
         })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
 
-            // Check if "highlights" array is present in the data
-            if(data.highlights && Array.isArray(data.highlights)) {
-                data.highlights.forEach((highlight, index) => {
-                    console.log(`Highlight ${index + 1}:`);
-                    console.log(`Start Time: ${highlight.start_time}`);
-                    console.log(`End Time: ${highlight.end_time}`);
+                // Check if "highlights" array is present in the data
+                if (data.highlights && Array.isArray(data.highlights)) {
+                    data.highlights.forEach((highlight, index) => {
+                        console.log(`Highlight ${index + 1}:`);
+                        console.log(`Start Time: ${highlight.start_time}`);
+                        console.log(`End Time: ${highlight.end_time}`);
 
-                    const timeDuration = document.getElementsByClassName('ytp-time-duration')[0].innerHTML;
+                        const timeDuration = document.getElementsByClassName('ytp-time-duration')[0].innerHTML;
 
-                    const [minutes, seconds] = timeDuration.split(":").map(Number);
-                    const totalSeconds = minutes * 60 + seconds;
+                        const [minutes, seconds] = timeDuration.split(":").map(Number);
+                        const totalSeconds = minutes * 60 + seconds;
 
-                    const progressBar = document.getElementsByClassName('ytp-progress-bar-container')[0];
-
-
-                    const totalDuration = totalSeconds; // Example value in seconds
-
-                    const timestamp1 = highlight.start_time;
-                    const timestamp2 = highlight.end_time;
-
-                    // Calculate position and width of the highlight based on timestamps
-                    const highlightPosition = (timestamp1 / totalDuration) * progressBar.offsetWidth;
-                    const highlightWidth = ((timestamp2 - timestamp1) / totalDuration) * progressBar.offsetWidth;
-
-                    // Create and style the highlight element
-                    const greenHighlight = document.createElement('div');
-                    greenHighlight.style.position = 'absolute';
-                    greenHighlight.style.backgroundColor = 'green';
-                    greenHighlight.style.height = '100%';
-                    greenHighlight.style.width = `${highlightWidth}px`;
-                    greenHighlight.style.left = `${highlightPosition}px`;
-                    greenHighlight.style.zIndex = '1000';
-                    greenHighlight.style.touchAction = 'none';
-                    greenHighlight.role = 'slider';
-                    greenHighlight.tabIndex = '0';  
-                    greenHighlight.draggable = true; // Prefer boolean values when applicable
-
-                    console.log("appending highlight")
-                    // Append the highlight element to the progress bar
-                    progressBar.appendChild(greenHighlight);
+                        const progressBar = document.getElementsByClassName('ytp-progress-bar-container')[0];
 
 
+                        const totalDuration = totalSeconds; // Example value in seconds
 
+                        const timestamp1 = highlight.start_time;
+                        const timestamp2 = highlight.end_time;
 
-                    let result = fetchElementAndParent();
-                    if (result) {
-                        console.log("Filtered element:", result.filteredElement);
-                        console.log("Parent of filtered element:", result.parentElement);
-                    } else {
-                        console.log("Element not found");
+                        // Calculate position and width of the highlight based on timestamps
+                        const highlightPosition = (timestamp1 / totalDuration) * progressBar.offsetWidth;
+                        const highlightWidth = ((timestamp2 - timestamp1) / totalDuration) * progressBar.offsetWidth;
 
-                    }
+                        // Create and style the highlight element
+                        const greenHighlight = document.createElement('div');
+                        greenHighlight.style.position = 'absolute';
+                        greenHighlight.style.backgroundColor = 'green';
+                        greenHighlight.style.height = '100%';
+                        greenHighlight.style.width = `${highlightWidth}px`;
+                        greenHighlight.style.left = `${highlightPosition}px`;
+                        greenHighlight.style.zIndex = '1000';
+                        greenHighlight.style.touchAction = 'none';
+                        greenHighlight.role = 'slider';
+                        greenHighlight.tabIndex = '0';
+                        greenHighlight.draggable = true; // Prefer boolean values when applicable
+
+                        console.log("appending highlight")
+                        // Append the highlight element to the progress bar
+                        progressBar.appendChild(greenHighlight);
 
 
 
 
+                        let result = fetchElementAndParent();
+                        if (result) {
+                            console.log("Filtered element:", result.filteredElement);
+                            console.log("Parent of filtered element:", result.parentElement);
+                        } else {
+                            console.log("Element not found");
+                        }
 
-                });
-            }
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
+
+
+
+
+                    });
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
 
 
         sendResponse({ status: 'success' });
     }
-  );
+);
 
-  function fetchElementAndParent() {
+function fetchElementAndParent() {
     // Fetch the specific div element with the given class and ID
     let filteredElement = document.querySelector('div.style-scope.ytd-watch-flexy#secondary');
     console.log("inside function")
@@ -188,7 +188,8 @@ function createNeuroLearnElement() {
     container.style.borderRadius = '10px';
     container.style.width = '300px';  // Adjust width as needed
     container.style.marginBottom = '20px';
-    
+    container.style.zIndex = '99999999';
+
     // Title
     const title = document.createElement('h2');
     title.style.fontSize = '30px';
@@ -198,26 +199,24 @@ function createNeuroLearnElement() {
     title.style.color = '#FFFFFF';  // Adjust title color as needed
     container.appendChild(title);
 
-    
-
     // Highlights
     for (let i = 0; i < 3; i++) {
         const highlight = document.createElement('div');
-        
+
         // Set the translucent bubble styles for each highlight
         highlight.style.background = 'rgba(255, 255, 255, 0.8)'; // More opaque than before
         highlight.style.borderRadius = '20px'; // More rounded corners
-        highlight.style.padding = '10px 20px'; 
+        highlight.style.padding = '10px 20px';
         highlight.style.marginBottom = '15px';
         highlight.style.display = 'flex';
         highlight.style.justifyContent = 'space-between';
         highlight.style.alignItems = 'center';
-        
+
         const text = document.createElement('span');
         text.textContent = `Highlight 1 - Get the space`;
         text.style.fontSize = '18px';
         highlight.appendChild(text);
-        
+
         const percentage = document.createElement('span');
         percentage.textContent = i === 0 ? '75%' : '20%';
         percentage.style.background = i === 0 ? 'limegreen' : 'red';
@@ -226,7 +225,7 @@ function createNeuroLearnElement() {
         percentage.style.color = 'white';
         percentage.style.fontSize = '18px';
         highlight.appendChild(percentage);
-        
+
         container.appendChild(highlight);
     }
 
