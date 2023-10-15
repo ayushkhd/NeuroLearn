@@ -68,7 +68,7 @@ chrome.runtime.onMessage.addListener(
 
         var videoHighlight = {
             videoToHighlight: request.url,
-            objective: 'Generate a summary suitable for a software engineer building video search.',
+            objective: request.message,
         };
 
 
@@ -265,7 +265,7 @@ function createNeuroLearnElement() {
     aiCoach.style.textAlign = 'center';
 
     const aiCoachButton = document.createElement('button');
-    aiCoachButton.textContent = 'Send';
+    aiCoachButton.innerHTML = '&#x27A4;'; // Unicode for rightwards arrow
     aiCoachButton.style.background = '#8B5DF8';
     aiCoachButton.style.color = 'white';
     aiCoachButton.style.borderRadius = '20px';
