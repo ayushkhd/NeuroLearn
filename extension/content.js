@@ -23,10 +23,9 @@ chrome.runtime.onMessage.addListener(
 
     })
 
-chrome.runtime.onMessage.addListener(
-    (request, sender, sendResponse) => {
+generateOutputs = (context, url) => {
 
-        console.log(request.url)
+        console.log(url)
 
         const player = document.getElementById("movie_player");
         console.log(player);  // This should log the player object or null.
@@ -40,8 +39,8 @@ chrome.runtime.onMessage.addListener(
         console.log("received message")
 
         var videoHighlight = {
-            videoToHighlight: request.url,
-            objective: request.message,
+            videoToHighlight: url,
+            objective: context,
         };
 
 
@@ -123,7 +122,6 @@ chrome.runtime.onMessage.addListener(
 
 
     }
-);
 
 
 
@@ -132,7 +130,11 @@ chrome.runtime.onMessage.addListener(
 
 function fetchElementAndParent(highlights) {
     // Fetch the specific div element with the given class and ID
-    let filteredElement = document.querySelector('div.style-scope.ytd-watch-flexy#secondary');
+    let filteredElement = document.querySelector('div#neurolearn_container');
+    if (!filteredElement) {
+        filteredElement = document.querySelector('div.style-scope.ytd-watch-flexy#secondary');
+    }
+    
     console.log("inside function")
 
     if (filteredElement) {
