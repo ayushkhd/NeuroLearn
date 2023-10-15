@@ -134,7 +134,7 @@ chrome.runtime.onMessage.addListener(
 
 
 
-                        
+
 
 
 
@@ -142,12 +142,12 @@ chrome.runtime.onMessage.addListener(
 
                     });
                     let result = fetchElementAndParent(data.highlights);
-                        if (result) {
-                            console.log("Filtered element:", result.filteredElement);
-                            console.log("Parent of filtered element:", result.parentElement);
-                        } else {
-                            console.log("Element not found");
-                        }
+                    if (result) {
+                        console.log("Filtered element:", result.filteredElement);
+                        console.log("Parent of filtered element:", result.parentElement);
+                    } else {
+                        console.log("Element not found");
+                    }
                 }
             })
             .catch((error) => {
@@ -219,6 +219,9 @@ function createNeuroLearnElement(highlights) {
     blobImage.id = 'blob_image';
     blobImage.src = 'https://gist.githubusercontent.com/ColabDog/be2c2c3dae7d31fd668783c480e7ebec/raw/d63bc5aaa982da97bf083b391ca54638b6fbc4f7/blue_blob.svg';
     blobImage.alt = 'Blob SVG';
+
+    // Add CSS animation to make the SVG zoom in and out
+    blobImage.style.animation = 'zoomInOut 2s infinite';
 
     blobSvg.appendChild(blobImage);
     titleContainer.appendChild(blobSvg);
