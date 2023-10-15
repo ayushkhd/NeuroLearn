@@ -1,3 +1,4 @@
+from .langchain_helper.helper import get_response_from_query
 import openai
 import os
 from dotenv import load_dotenv
@@ -5,6 +6,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
+# from langchain_helper import *
 
 load_dotenv()
 
@@ -94,3 +96,16 @@ def highlight_video(video: VideoHighlight):
         ]
     )
     return response
+
+
+class ChatQueryRequest(BaseModel):
+    query: str
+
+
+@app.post("/chatQuery/")
+def generate_response(request_body: ChatQueryRequest):
+    # Here, you can process the query and generate a response.
+    # For simplicity, I'll just return the query as the response.
+    query = request_body.query
+    response = get_response_from_query(query)
+    return {"response": response}
