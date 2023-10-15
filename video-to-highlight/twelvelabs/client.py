@@ -25,6 +25,15 @@ class HighlightVideoBody(BaseModel):
     prompt: str
     type: str = "highlight"
 
+def make_chat_completion_request(prompt: str):
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "You are a reasoning expert."},
+            {"role": "user", "content": prompt},
+        ],
+    )
+    return response.choices[0].message.content
 
 class Client:
     def __init__(self):
@@ -52,28 +61,18 @@ class Client:
         data = body.dict()
         response = requests.post(url, headers=self.headers, json=data)
         return response.json()
+    
 
-    def explain_highlights(self, highlights: List[Highlight], prompt: str):
-        openai_url = "https://api.openai.com/v1/engines/davinci-codex/completions"
-        headers = {"Authorization": f"Bearer {os.getenv('OPENAI_API_KEY')}"}
-
-        for highlight in highlights:
-            data = {
-                "prompt": f"{prompt}\n{highlight.highlight}",
-                "max_tokens": 60
-            }
-            response = requests.post(openai_url, headers=headers, json=data)
-            highlight.highlight_summary = response.json()['choices'][0]['text'].strip()
-
-        return highlights
-
-    # def highlight_video(self, body: HighlightVideoBody) -> HighlightVideoResponse:
-    #     url = f"{self.api_url}/summarize"
-    #     data = body.dict()
-    #     response = requests.post(url, headers=self.headers, json=data)
-    #     highlights = HighlightVideoResponse(**response.json()).highlights
-    #     explained_highlights = self.explain_highlights(highlights, body.prompt)
-    #     return HighlightVideoResponse(id=body.video_id, highlights=explained_highlights)
+    def explain(self, highlight: str, prompt: str):
+        response = make_chat_completion_request(
+            f"""Purpose: {prompt}
+    Highlight: {highlight}
+    Can you explain why this highlight is relevant for my purpose.
+    Give a concise reason in 1 or 2 sentences.
+    Let's think step by step.
+    Reason:"""
+        )
+        return response
     
     def chat_completion(self, message: str):
         openai_url = "https://api.openai.com/v1/engines/davinci-codex/completions"
