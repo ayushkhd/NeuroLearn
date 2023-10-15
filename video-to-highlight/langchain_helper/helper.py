@@ -8,6 +8,8 @@ from langchain.vectorstores import FAISS
 from dotenv import load_dotenv
 import os
 
+load_dotenv()
+
 def create_vector_db_from_youtube_url(video_url: str) -> FAISS:
     loader = YoutubeLoader.from_youtube_url(video_url)
     transcript = loader.load()
@@ -17,14 +19,11 @@ def create_vector_db_from_youtube_url(video_url: str) -> FAISS:
 
     db = FAISS.from_documents(docs, embeddings)
     return db
-load_dotenv()
 
 video_url = os.getenv('VIDEO_URL', "https://www.youtube.com/watch?v=pMFv6liWK4M")
 openai_api_key = os.getenv("OPENAI_API_KEY")
 embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
 db = create_vector_db_from_youtube_url(video_url)
-
-
 
 def get_response_from_query(query, k=4):
     # text-danvinci can handle 4097 tokens

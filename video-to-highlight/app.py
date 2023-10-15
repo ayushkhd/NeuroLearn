@@ -22,6 +22,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/healthcheck")
+def read_root():
+     return {"status": "ok"}
+
+
 class VideoHighlight(BaseModel):
     videoToHighlight: str
     objective: str
