@@ -3,6 +3,9 @@
   "description": "Have AI teach you better!",
   "version": "1.0",
   "manifest_version": 3,
+  "background": {
+    "service_worker": "background.js"
+  },
   "icons": {
     "48": "assets/48.png",
     "72": "assets/72.png",
@@ -17,16 +20,17 @@
     "contextMenus",
     "tabs",
     "storage",
-    "activeTab"
+    "activeTab",
+    "http://localhost:8080/"
   ],
-  "content_scripts": [
+    "content_scripts": [
     {
       "matches": [
         "http://*/*",
         "https://*/*"
       ],
       "js": [
-        "content.js"
+        "content.js", "websockets.js"
       ],
       "css": [
         "index.css"

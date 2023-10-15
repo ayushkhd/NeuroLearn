@@ -21,12 +21,18 @@ await neurosity
     });
 console.log("Logged in");
 
-neurosity.focus().subscribe((focus) => {
-    if (focus.probability > 0.3) {
-      console.log("Hello World! ", focus.probability);
+const WebSocket = require('ws');
+
+const ws = new WebSocket('ws://localhost:8080');
+
+ws.on('open', function open() {
+  neurosity.focus().subscribe((focus) => {
+    if (focus.probability > 0.1) {
+      console.log(focus.probability)
+      ws.send(JSON.stringify({ focusProbability: focus.probability }));
     }
   });
-
+});
 };
 
 

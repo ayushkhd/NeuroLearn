@@ -311,10 +311,62 @@ function createNeuroLearnElement(highlights) {
     newSection.style.right = '0'; // Position the new section at the right of the screen
     newSection.style.left = 'auto'; // Override any existing left positioning
 
+    // const socket = new WebSocket('ws://localhost:8080');
+    // let circleElement = createCircularElement(5); // Create the circular element with number 5
+    // newSection.appendChild(circleElement); // Append the circular element to the new section
+    
+    // socket.addEventListener('message', function (event) {
+    //     const data = JSON.parse(event.data);
+    //     if (data && data.focusProbability) {
+    //         // Update your circular element with the received data
+    //         const newCircleElement = createCircularElement(Math.round(data.focusProbability * 100));
+    //         console.log(Math.round(data.focusProbability * 100))
+    //         // Replace the old circular element with the new one in your DOM
+    //         newSection.replaceChild(newCircleElement, circleElement);
+    //         circleElement = newCircleElement;
+    //     }
+    // });
 
-    const circleElement = createCircularElement(5); // Create the circular element with number 5
+    // const socket = new WebSocket('ws://localhost:8080');
+    let circleElement = createCircularElement(5); // Create the circular element with number 5
     newSection.appendChild(circleElement); // Append the circular element to the new section
+    
+    // socket.addEventListener('open', function () {
+    //     console.log('WebSocket connection established');
+    // });
+    
+    // socket.addEventListener('message', function (event) {
+    //     const data = JSON.parse(event.data);
+    //     console.log('Received data:', data);
+    //     if (data && data.focusProbability) {
+    //         // console.log('Received data:', data);
+    //         // Update your circular element with the received data
+    //         const newCircleElement = createCircularElement(Math.round(data.focusProbability * 100));
+    //         // Replace the old circular element with the new one in your DOM
+    //         newSection.replaceChild(newCircleElement, circleElement);
+    //         circleElement = newCircleElement;
+    //     }
+    // });
+    
+    // socket.addEventListener('error', function (error) {
+    //     console.log('WebSocket error:', error);
+    // });
+    
+    // socket.addEventListener('close', function () {
+    //     console.log('WebSocket connection closed');
+    // });
 
+    chrome.runtime.onMessage.addListener(
+        function(request, sender, sendResponse) {
+          if (request.focusProbability) {
+            console.log("Content script received focus probability: " + request.focusProbability);
+            // Update your circular element with the received data
+            const newCircleElement = createCircularElement(Math.round(request.focusProbability * 100));
+            // Replace the old circular element with the new one in your DOM
+            newSection.replaceChild(newCircleElement, circleElement);
+            circleElement = newCircleElement;
+          }
+        });
 
     flexDiv.appendChild(aiCoach);
     flexDiv.appendChild(aiCoachButton);
@@ -324,5 +376,4 @@ function createNeuroLearnElement(highlights) {
 
     return container;
 }
-
 
