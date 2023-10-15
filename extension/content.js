@@ -11,8 +11,16 @@ function secondsToTime(seconds) {
     return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
 }
 
+const AUDIO_WAVE_SVGS = [
+    "https://gist.githubusercontent.com/ColabDog/166f74eafc06b13285cd4a38268f8d3e/raw/b868191314064d7120a1e8f5944b460c88fe63fa/audio-wave-5.svg",
+    "https://gist.githubusercontent.com/ColabDog/4dcfb4e1ae34dd8f31930f5ade26b204/raw/3574168948e5a1b828584997e9941c86a8434f53/audio-wave-4.svg",
+    "https://gist.githubusercontent.com/ColabDog/f860a07594eb306946568d01f2bdd877/raw/c3a3bc62cb2eb032040d67bf93a5d1ae3f154e82/audio-wave-3.svg",
+    "https://gist.githubusercontent.com/ColabDog/54bdaf7e183d8cc80fbfc43aad738386/raw/355a3518d7506729d7977d5fc5f61049931fcbec/audio-wave-2.svg",
+    "https://gist.githubusercontent.com/ColabDog/64d38f49798e52dc67006cc042a93c05/raw/8aed750cfa8a15173b93744343b4324758b34f60/audio-wave-1.svg"
+]
 
-async function playAudio(text) {
+async function playAudio(text, imageElement) {
+
     const voiceId = 'RE41IpVvESKH1SkTq04p';
     const apiKey = '925011858db6abb00c9dacdbb13ef2c3';
     const apiEndpoint = `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/stream`;
@@ -32,9 +40,17 @@ async function playAudio(text) {
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         const audioBuffer = await audioContext.decodeAudioData(audioArrayBuffer);
         const audioSource = audioContext.createBufferSource();
+        const duration = audioBuffer.duration * 1000;
+
         audioSource.buffer = audioBuffer;
         audioSource.connect(audioContext.destination);
         audioSource.start(0);
+        // on ended hide
+        // Add an event listener to hide the imageElement when the audio finishes playing
+        setTimeout(() => {
+            imageElement.style.display = 'none';
+        }, duration);
+
     } else {
         throw new Error(`Error: ${response.statusText}`);
     }
@@ -329,7 +345,32 @@ function createNeuroLearnElement(highlights) {
 
             var video = document.getElementsByTagName('video')[0];
             video.pause();
-            playAudio(item.questions[0])
+
+            // Display the audio SVG images when audio is played
+            const images = AUDIO_WAVE_SVGS;
+            let currentImageIndex = 0;
+            const imageElement = document.createElement('img');
+            imageElement.src = images[currentImageIndex];
+            imageElement.style.opacity = '1'; // Set initial opacity to 1
+            imageElement.style.width = '500px'; // Set the width of the image to 500px
+            container.appendChild(imageElement);
+
+            // Set an interval to change the image source every 4 seconds (2 seconds for fading out and 2 seconds for fading in)
+            setInterval(function () {
+                currentImageIndex = (currentImageIndex + 1) % images.length; // Loop through the images
+
+                // Fade out the current image
+                imageElement.style.transition = 'opacity 20s ease-in-out';
+                imageElement.style.opacity = '0';
+
+                // After the current image fades out, change the image source and start fading it in
+                setTimeout(function () {
+                    imageElement.src = images[currentImageIndex];
+                    imageElement.style.opacity = '1';
+                }, 400); // Trigger after 2 seconds (2000 milliseconds), which is the time it takes for the current image to fade out
+            }, 120); // Change image every 4 seconds (4000 milliseconds)
+
+            playAudio(item.questions[0], imageElement);
 
         });
         container.appendChild(questionButton);
@@ -425,6 +466,32 @@ function createNeuroLearnElement(highlights) {
 
     container.appendChild(flexDiv);
     container.appendChild(newSection);
+    // // Create an array of images
+    // const images = AUDIO_WAVE_SVGS;
+
+    // let currentImageIndex = 0;
+
+    // // Create an image element, set its initial source, and style it
+    // const imageElement = document.createElement('img');
+    // imageElement.src = images[currentImageIndex];
+    // imageElement.style.opacity = '1'; // Set initial opacity to 1
+    // imageElement.style.width = '500px'; // Set the width of the image to 60px
+    // container.appendChild(imageElement);
+
+    // // Set an interval to change the image source every 2 seconds
+    // setInterval(function () {
+    //     currentImageIndex = (currentImageIndex + 1) % images.length; // Loop through the images
+    //     // Fade out the current image
+    //     imageElement.style.transition = 'opacity 1s ease-in-out';
+    //     imageElement.style.opacity = '1';
+    //     // After the half of the fade out transition ends, change the image source and start fading it in
+    //     setTimeout(function () {
+    //         imageElement.src = images[currentImageIndex];
+    //         // imageElement.style.opacity = '1';
+    //     }, 5); // Changed from 1000 to 500 for overlapping transitions
+    // }, 120);
+
+
 
     return container;
 }
