@@ -1,3 +1,4 @@
+from .langchain_helper.helper import get_response_from_query
 import openai
 import os
 from dotenv import load_dotenv
@@ -121,3 +122,15 @@ def highlight_video(video: VideoHighlight):
                 )
             )
         return VideoHighlightResponse(highlights=highlights)
+
+class ChatQueryRequest(BaseModel):
+    query: str
+
+
+@app.post("/chatQuery/")
+def generate_response(request_body: ChatQueryRequest):
+    # Here, you can process the query and generate a response.
+    # For simplicity, I'll just return the query as the response.
+    query = request_body.query
+    response = get_response_from_query(query)
+    return {"response": response}

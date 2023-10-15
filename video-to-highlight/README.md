@@ -24,3 +24,16 @@ Response:
     ],
 }
 ```
+
+```
+POST /chatQuery
+{
+    "query": "What does CSS mean ?",
+}
+
+Response:
+{
+    "response": "CSS stands for \"Cascading Style Sheets.\" It's a fundamental technology used in web development to define the visual presentation of a web page written in HTML or XML. CSS is used to specify how elements on a web page should be styled, including aspects like layout, colors, fonts, and spacing. By separating the content (HTML) from its presentation (CSS), web developers can create attractive and consistent web designs while maintaining a clear structure and readability in the underlying code. It's an essential part of modern web design and is used to control the look and feel of websites."
+
+}
+```
