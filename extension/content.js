@@ -72,7 +72,7 @@ chrome.runtime.onMessage.addListener(
         };
 
 
-        fetch('https://30a0-12-94-170-82.ngrok-free.app/videoHighlight/', {
+        fetch('https://166a-12-94-170-82.ngrok-free.app/videoHighlight/', {
             // fetch('http://localhost:8000/videoHighlight/', {
             method: 'POST',
             headers: {
@@ -128,19 +128,20 @@ chrome.runtime.onMessage.addListener(
 
 
 
-                        let result = fetchElementAndParent();
-                        if (result) {
-                            console.log("Filtered element:", result.filteredElement);
-                            console.log("Parent of filtered element:", result.parentElement);
-                        } else {
-                            console.log("Element not found");
-                        }
+                        
 
 
 
 
 
                     });
+                    let result = fetchElementAndParent();
+                        if (result) {
+                            console.log("Filtered element:", result.filteredElement);
+                            console.log("Parent of filtered element:", result.parentElement);
+                        } else {
+                            console.log("Element not found");
+                        }
                 }
             })
             .catch((error) => {
