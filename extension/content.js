@@ -172,6 +172,7 @@ function createNeuroLearnElement(highlights) {
     titleContainer.style.display = 'flex';
     titleContainer.style.justifyContent = 'space-between';
     titleContainer.style.alignItems = 'center';
+    titleContainer.style.marginBottom = '20px';
 
     const title = document.createElement('h2');
     title.style.fontSize = '30px';
@@ -180,6 +181,8 @@ function createNeuroLearnElement(highlights) {
     title.textContent = 'NeuroLearn';
     title.style.color = '#FFFFFF';  // Adjust title color as needed
     titleContainer.appendChild(title);
+    titleContainer.style.marginRight = '10px';
+    titleContainer.style.marginTop = '10px';
 
     const blobSvg = document.createElement('div');
     blobSvg.id = 'blob_svg';
@@ -217,8 +220,8 @@ function createNeuroLearnElement(highlights) {
 
         // Add hover effect
         highlight.onmouseover = function() {
-            this.style.transform = 'scale(1.05)'; // Grow in size
-            this.style.background = 'rgba(255, 255, 255, 0.7)'; // Make background lighter and less transparent
+            this.style.transform = 'scale(1.02)'; // Grow less in size
+            this.style.background = 'rgba(255, 255, 255, 0.8)'; // Make background brighter and less transparent
         };
         highlight.onmouseout = function() {
             this.style.transform = 'none'; // Reset size
@@ -283,8 +286,8 @@ function createNeuroLearnElement(highlights) {
     flexDiv.style.justifyContent = 'space-between';
     flexDiv.style.alignItems = 'center';
 
-    const aiCoach = document.createElement('textarea');
-    aiCoach.style.background = 'rgba(255, 255, 255, 0.8)';
+    const aiCoach = document.createElement('input');
+    aiCoach.style.background = 'rgba(255, 255, 255, 0.5)';
     aiCoach.style.borderRadius = '20px';
     aiCoach.style.marginTop = '15px';
     aiCoach.placeholder = 'Ask your AI coach...';
@@ -292,6 +295,13 @@ function createNeuroLearnElement(highlights) {
     aiCoach.style.fontFamily = 'Poppins, sans-serif'; // Make the font Poppins
     aiCoach.style.marginLeft = '10px';
     aiCoach.style.width = '100%';
+    aiCoach.style.display = 'flex';
+    aiCoach.style.alignItems = 'center';
+    aiCoach.style.justifyContent = 'center';
+    aiCoach.style.height = '100%'; // Add this line to make the text vertically centered
+    aiCoach.style.boxShadow = '0px 4px 8px 0px rgba(0, 0, 0, 0.2)'; // Add drop shadow
+    aiCoach.style.padding = '10px 20px';
+
 
 
     // Event listener to auto-expand the textarea
@@ -301,7 +311,7 @@ function createNeuroLearnElement(highlights) {
     });
     const aiCoachButton = document.createElement('button');
     aiCoachButton.innerHTML = '&#x27A4;'; // Unicode for rightwards arrow
-    aiCoachButton.style.background = '#8B5DF8';
+    aiCoachButton.style.background = '#00d4ff';
     aiCoachButton.style.color = 'white';
     aiCoachButton.style.borderRadius = '20px';
     aiCoachButton.style.marginTop = '15px';
@@ -312,6 +322,15 @@ function createNeuroLearnElement(highlights) {
     aiCoachButton.style.cursor = 'pointer';
     aiCoachButton.style.outline = 'none';
     aiCoachButton.style.fontWeight = 'bold';
+    aiCoachButton.style.transition = 'all 0.3s ease'; // Add transition for smooth animation
+    aiCoachButton.style.boxShadow = '0px 4px 8px 0px rgba(0, 0, 0, 0.2)'; // Add drop shadow
+
+    aiCoachButton.addEventListener('mouseover', function() {
+        this.style.transform = 'scale(1.1)'; // Increase size by 10% on hover
+    });
+    aiCoachButton.addEventListener('mouseout', function() {
+        this.style.transform = 'scale(1.0)'; // Return to original size when not hovering
+    });
 
     const newSection = document.createElement('div');
     newSection.style.display = 'flex';
