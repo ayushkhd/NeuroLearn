@@ -161,8 +161,8 @@ function createCircularElement(number) {
 
 function createNeuroLearnElement(highlights) {
     const container = document.createElement('div');
-    container.style.background = 'linear-gradient(to right, #020024, #090979, #00d4ff)';  // Gradient from dark blue to vibrant purple
-     container.style.borderRadius = '10px';
+    container.style.background = 'linear-gradient(to bottom right, #2596be, #183d6e)';  // Gradient from #2596be to #183d6e at the low bottom right
+    container.style.borderRadius = '10px';
     container.style.width = '28%';  // Adjust width as needed
     container.style.marginBottom = '20px';
     container.style.zIndex = '99999999';
@@ -204,16 +204,26 @@ function createNeuroLearnElement(highlights) {
         const highlight = document.createElement('div');
 
         // Set the translucent bubble styles for each highlight
-        highlight.style.background = 'rgba(255, 255, 255, 0.8)'; // More opaque than before
+        highlight.style.background = 'rgba(255, 255, 255, 0.5)'; // More transparent than before
         highlight.style.borderRadius = '20px'; // More rounded corners
         highlight.style.padding = '10px 20px';
         highlight.style.display = 'flex';
         highlight.style.justifyContent = 'space-between';
         highlight.style.alignItems = 'center';
-        highlight.style.boxShadow = '0px 3px 6px rgba(0, 0, 0, 0.16)'; // Add drop shadow
+        highlight.style.boxShadow = '0px 5px 15px rgba(0, 0, 0, 0.3)'; // Add stronger drop shadow
         highlight.style.marginLeft = '10px';
         highlight.style.marginRight = '10px';
+        highlight.style.transition = 'all 0.3s ease'; // Add transition for smooth animation
 
+        // Add hover effect
+        highlight.onmouseover = function() {
+            this.style.transform = 'scale(1.05)'; // Grow in size
+            this.style.background = 'rgba(255, 255, 255, 0.7)'; // Make background lighter and less transparent
+        };
+        highlight.onmouseout = function() {
+            this.style.transform = 'none'; // Reset size
+            this.style.background = 'rgba(255, 255, 255, 0.5)'; // Reset background
+        };
         start_time = secondsToTime(item.start_time);
         end_time = secondsToTime(item.end_time);
 
@@ -222,6 +232,7 @@ function createNeuroLearnElement(highlights) {
         text.style.fontSize = '16px';
         text.style.fontFamily = 'Poppins, sans-serif'; // Make the font Poppins
         text.style.fontWeight = '600'; // Make the font semibold
+        text.style.color = 'rgba(0, 0, 0, 0.5)'; // Make the text more transparent
         highlight.appendChild(text);
 
         const percentage = document.createElement('span');
