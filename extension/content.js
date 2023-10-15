@@ -1,58 +1,5 @@
 console.log("Content script has loaded and is running!");
 
-// chrome.runtime.onMessage.addListener(
-//     (request, sender, sendResponse) => {
-
-//         console.log("received message")
-
-//         // const timestamp1 = request.message;
-//         // const timestamp2 = request.content;
-
-//         const timeDuration = document.getElementsByClassName('ytp-time-duration')[0].innerHTML;
-
-//         const [minutes, seconds] = timeDuration.split(":").map(Number);
-//         const totalSeconds = minutes * 60 + seconds;
-
-
-//         // Assuming progressBar is the element representing the progress bar and its width can be used to calculate the position and size of the highlight
-//         const progressBar = document.getElementsByClassName('ytp-progress-bar-container')[0];
-
-//         // Assuming timestamp1 and timestamp2 are in seconds and represent a portion of the video's total duration
-//         const timestamp1 = timeToSeconds(request.message); 
-//     const timestamp2 = timeToSeconds(request.content); 
-
-//         // Assuming totalDuration represents the total duration of the video in seconds
-//         const totalDuration = totalSeconds; // Example value in seconds
-
-//         // Calculate position and width of the highlight based on timestamps
-//         const highlightPosition = (timestamp1 / totalDuration) * progressBar.offsetWidth;
-//         const highlightWidth = ((timestamp2 - timestamp1) / totalDuration) * progressBar.offsetWidth;
-
-//         // Create and style the highlight element
-//         const highlight = document.createElement('div');
-//         highlight.style.position = 'absolute';
-//         highlight.style.backgroundColor = 'green';
-//         highlight.style.height = '100%';
-//         highlight.style.width = `${highlightWidth}px`;
-//         highlight.style.left = `${highlightPosition}px`;
-//         highlight.style.zIndex = '1000';
-//         highlight.style.touchAction = 'none';
-//         highlight.role = 'slider';
-//         highlight.tabIndex = '0';  
-//         highlight.draggable = true; // Prefer boolean values when applicable
-
-//         console.log("appending highlight")
-//         // Append the highlight element to the progress bar
-//         progressBar.appendChild(highlight);
-
-
-
-
-//         console.log("returning true")
-//         sendResponse({ status: 'success' });
-//     }
-//   );
-
 function timeToSeconds(timeString) {
     const [minutes, seconds] = timeString.split(":").map(Number);
     return minutes * 60 + seconds;
@@ -151,6 +98,7 @@ chrome.runtime.onMessage.addListener(
         sendResponse({ status: 'success' });
     }
 );
+
 function skipToTime(time) {
     document.getElementById("movie_player").seekTo(time, true);
 }
@@ -218,6 +166,7 @@ function createNeuroLearnElement(highlights) {
     // Highlights
     for (let i = 0; i < highlights.length; i++) {
         const highlight = document.createElement('button');
+        highlight.id = `highlight-${i}`; // Assign a unique id to each button
 
         // Set the translucent bubble styles for each highlight
         highlight.style.background = 'rgba(255, 255, 255, 0.8)'; // More opaque than before
@@ -230,31 +179,26 @@ function createNeuroLearnElement(highlights) {
         highlight.style.transition = 'transform 0.3s ease'; // Add transition for smooth hover effect
 
         // Add hover effect to elevate the highlight
-        highlight.setAttribute("id", "highlightButton" + i);
-        container.appendChild(highlight);
+        highlight.addEventListener('mouseover', () => {
+            highlight.style.transform = 'scale(1.05)'; // Slightly enlarge the highlight
+            highlight.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.3)'; // Add shadow for elevation effect
+        });
 
-        const highlight_text = document.createElement("span");
-        highlight_text.textContent = highlights[i].highlight;
+        highlight.addEventListener('mouseout', () => {
+            highlight.style.transform = 'scale(1.0)'; // Reset the size of the highlight
+            highlight.style.boxShadow = 'none'; // Remove the shadow
+        });
 
-        highlight.onmouseover = function (ev) {
-            container.appendChild(highlight_text);
-        };
+        highlight.addEventListener('click', () => {
+            skipToTime(highlights[i].start_time);
+        });
 
-        highlight.onmouseout = function () {
-            this.style.transform = 'translateY(0)';
-        };
-
-        // Add click event to navigate to the start_time of the highlight
-        // highlight.addEventListener('click', function () {
-        //     skipToTime(highlights[i].start_time);
-        // });
-
-        const text = document.createElement('span');
+        const text = document.createElement('button');
         text.textContent = highlights[i].highlight; // Use the highlight text from the response
         text.style.fontSize = '18px';
         highlight.appendChild(text);
 
-        const percentage = document.createElement('span');
+        const percentage = document.createElement('button');
         percentage.textContent = i === 0 ? '75%' : '20%'; // Replace this with actual data if available
         percentage.style.background = i === 0 ? 'limegreen' : 'red';
         percentage.style.borderRadius = '50%';
