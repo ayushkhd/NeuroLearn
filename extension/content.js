@@ -143,12 +143,27 @@ function fetchElementAndParent(highlights) {
 // Example usage:
 console.log("calling func")
 
+function createCircularElement(number) {
+    const circle = document.createElement('div');
+    circle.style.width = '100px'; // Set the width
+    circle.style.height = '100px'; // Set the height
+    circle.style.borderRadius = '50%'; // Make it circular
+    circle.style.backgroundColor = 'blue'; // Set the background color
+    circle.style.display = 'flex'; // Use flexbox for centering
+    circle.style.justifyContent = 'center'; // Center the content horizontally
+    circle.style.alignItems = 'center'; // Center the content vertically
+    circle.style.color = 'white'; // Set the text color
+    circle.style.fontSize = '20px'; // Set the font size
+    circle.textContent = number; // Set the number
+
+    return circle;
+}
+
 function createNeuroLearnElement(highlights) {
     const container = document.createElement('div');
-    container.style.background = 'linear-gradient(#13142f 30%, black)';  // Gradient from purple to black, with purple extending further
-    container.style.padding = '10px';
-    container.style.borderRadius = '10px';
-    container.style.width = '300px';  // Adjust width as needed
+    container.style.background = 'linear-gradient(to right, #020024, #090979, #00d4ff)';  // Gradient from dark blue to vibrant purple
+     container.style.borderRadius = '10px';
+    container.style.width = '28%';  // Adjust width as needed
     container.style.marginBottom = '20px';
     container.style.zIndex = '99999999';
 
@@ -259,11 +274,27 @@ function createNeuroLearnElement(highlights) {
     aiCoachButton.style.outline = 'none';
     aiCoachButton.style.fontWeight = 'bold';
 
+    const newSection = document.createElement('div');
+    newSection.style.display = 'flex';
+    newSection.style.justifyContent = 'center';
+    newSection.style.alignItems = 'center';
+    newSection.style.marginTop = '20px'; // Add some margin at the top for spacing
+    newSection.style.position = 'fixed'; 
+    newSection.style.bottom = '0'; 
+    newSection.style.right = '0'; // Position the new section at the right of the screen
+    newSection.style.left = 'auto'; // Override any existing left positioning
+
+
+    const circleElement = createCircularElement(5); // Create the circular element with number 5
+    newSection.appendChild(circleElement); // Append the circular element to the new section
+
 
     flexDiv.appendChild(aiCoach);
     flexDiv.appendChild(aiCoachButton);
 
     container.appendChild(flexDiv);
+    container.appendChild(newSection);
+
     return container;
 }
 
