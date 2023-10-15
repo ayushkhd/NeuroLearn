@@ -530,6 +530,16 @@ newSection.style.alignItems = 'center';
 newSection.style.marginTop = '20px';
 newSection.style.left = 'auto';
 
+    const focusText = document.createElement('p');
+    focusText.textContent = 'Focus Score';
+    focusText.style.color = 'white';
+    focusText.style.fontSize = '20px';
+    focusText.style.fontFamily = 'Poppins, sans-serif'; // Make the font Poppins
+    focusText.style.marginRight = '10px';
+    focusText.style.fontWeight = 'bold';
+    newSection.appendChild(focusText);
+
+
     // Create and append the initial circular element
     let circleElement = createCircularElement(5);
     newSection.appendChild(circleElement);
