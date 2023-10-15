@@ -62,12 +62,12 @@ console.log("Content script has loaded and is running!");
 chrome.runtime.onMessage.addListener(
     (request, sender, sendResponse) => {
 
-        
+        console.log(request.url)
 
         console.log("received message")
 
         var videoHighlight = {
-            videoToHighlight: 'https://www.youtube.com/watch?v=4D94pqCOKyc&ab_channel=EO',
+            videoToHighlight: request.url,
             objective: 'Generate a summary suitable for a software engineer building video search.',
         };
         

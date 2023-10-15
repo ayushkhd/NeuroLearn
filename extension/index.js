@@ -77,7 +77,7 @@ const submitTimestamps = () => {
     console.log("sending message")
     chrome.tabs.sendMessage(
       activeTab,
-      { message: timestamp1, content: timestamp2 },
+      { message: timestamp1, content: timestamp2, url: tabs[0].url },
       (response) => {
         if(response) {
           if (response.status === 'failed') {
