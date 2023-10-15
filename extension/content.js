@@ -270,7 +270,7 @@ function createNeuroLearnElement(highlights) {
         const readMore = document.createElement('span');
         readMore.textContent = ' Read More';
         readMore.style.display = fullText.length > 100 ? 'inline' : 'none';
-        readMore.style.color = 'blue';
+        readMore.style.color = '#00d4ff';
         readMore.style.cursor = 'pointer';
         readMore.addEventListener('click', function() {
             description.textContent = fullText;
@@ -403,7 +403,7 @@ function createNeuroLearnElement(highlights) {
             circleElement = newCircleElement;
           }
         });
-
+    flexDiv.style.marginRight = '10px';
     flexDiv.appendChild(aiCoach);
     flexDiv.appendChild(aiCoachButton);
 
