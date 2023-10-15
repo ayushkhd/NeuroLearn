@@ -67,15 +67,13 @@ const getActiveTabUrl = () => {
 }
 
 const submitTimestamps = () => {
-  const contextInput = document.getElementById('context-input').value;
-  console.log("found context input")
 
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     const activeTab = tabs[0].id;
     console.log("sending message")
     chrome.tabs.sendMessage(
       activeTab,
-      { message: contextInput, url: tabs[0].url },
+      { message: tabs[0].url, },
       (response) => {
         if (response) {
           if (response.status === 'failed') {
@@ -107,7 +105,7 @@ const submitTimestamps = () => {
 
 // document.getElementById('submit-question').addEventListener('click', submitQuestion);
 
-document.getElementById('submit-context').addEventListener('click', submitTimestamps);
+document.getElementById('start-button').addEventListener('click', submitTimestamps);
 
 // checkForKey().then((response) => {
 //   if (response) {
