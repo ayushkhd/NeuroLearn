@@ -76,10 +76,6 @@ chrome.runtime.onMessage.addListener(
         console.log(typeof player.seekTo);  // This should log "function" if it's available.
 
 
-
-        document.getElementsByTagName('video')[0].currentTime = 20
-
-
         // This is the code you'll be injecting into the page
 
 
@@ -272,6 +268,8 @@ function createNeuroLearnElement(highlights) {
         highlight.addEventListener('click', function() {
             document.getElementsByTagName('video')[0].currentTime = item.start_time;
         });
+
+        highlight.style.cursor = 'pointer';
 
         container.appendChild(highlight);
     }
