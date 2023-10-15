@@ -1,5 +1,6 @@
 import requests
 import os
+import openai
 from dotenv import load_dotenv
 from pydantic import BaseModel, Field
 from typing import List
@@ -45,3 +46,43 @@ class Client:
         data = body.dict()
         response = requests.post(url, headers=self.headers, json=data)
         return HighlightVideoResponse(**response.json())
+
+    def summarize(self, body: HighlightVideoBody) -> HighlightVideoResponse:
+        url = f"{self.api_url}/summarize"
+        data = body.dict()
+        response = requests.post(url, headers=self.headers, json=data)
+        return response.json()
+
+    def explain_highlights(self, highlights: List[Highlight], prompt: str):
+        openai_url = "https://api.openai.com/v1/engines/davinci-codex/completions"
+        headers = {"Authorization": f"Bearer {os.getenv('OPENAI_API_KEY')}"}
+
+        for highlight in highlights:
+            data = {
+                "prompt": f"{prompt}\n{highlight.highlight}",
+                "max_tokens": 60
+            }
+            response = requests.post(openai_url, headers=headers, json=data)
+            highlight.highlight_summary = response.json()['choices'][0]['text'].strip()
+
+        return highlights
+
+    # def highlight_video(self, body: HighlightVideoBody) -> HighlightVideoResponse:
+    #     url = f"{self.api_url}/summarize"
+    #     data = body.dict()
+    #     response = requests.post(url, headers=self.headers, json=data)
+    #     highlights = HighlightVideoResponse(**response.json()).highlights
+    #     explained_highlights = self.explain_highlights(highlights, body.prompt)
+    #     return HighlightVideoResponse(id=body.video_id, highlights=explained_highlights)
+    
+    def chat_completion(self, message: str):
+        openai_url = "https://api.openai.com/v1/engines/davinci-codex/completions"
+        headers = {"Authorization": f"Bearer {os.getenv('OPENAI_API_KEY')}"}
+        data = {
+            "messages": [
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": message}
+            ]
+        }
+        response = requests.post(openai_url, headers=headers, json=data)
+        return response.json()['choices'][0]['message']['content']

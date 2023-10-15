@@ -1,2 +1,4 @@
 fastapi
 uvicorn
+typing-extensions==4.6.0
+elevenlabs
