@@ -4,7 +4,7 @@
   "version": "1.0",
   "manifest_version": 3,
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "websockets.js"
   },
   "icons": {
     "48": "assets/48.png",

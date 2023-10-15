@@ -210,6 +210,7 @@ function createNeuroLearnElement(highlights) {
         highlight.style.background = 'rgba(255, 255, 255, 0.5)'; // More transparent than before
         highlight.style.borderRadius = '20px'; // More rounded corners
         highlight.style.padding = '10px 20px';
+        highlight.style.marginBottom = '15px';
         highlight.style.display = 'flex';
         highlight.style.justifyContent = 'space-between';
         highlight.style.alignItems = 'center';
@@ -254,30 +255,6 @@ function createNeuroLearnElement(highlights) {
         highlight.style.cursor = 'pointer';
 
         container.appendChild(highlight);
-
-        const description = document.createElement('div');
-        const fullText = item.reason_for_highlight;
-        const shortText = fullText.length > 100 ? fullText.substr(0, 97) + '...' : fullText;
-
-        description.textContent = shortText;
-        description.style.color = 'white';
-        description.style.marginBottom = '15px';
-        description.style.marginLeft = '20px';
-        description.style.marginRight = '10px';
-        description.style.fontSize = '12px';
-
-        const readMore = document.createElement('span');
-        readMore.textContent = ' Read More';
-        readMore.style.display = fullText.length > 100 ? 'inline' : 'none';
-        readMore.style.color = 'blue';
-        readMore.style.cursor = 'pointer';
-        readMore.addEventListener('click', function() {
-            description.textContent = fullText;
-            readMore.style.display = 'none';
-        });
-
-        description.appendChild(readMore);
-        container.appendChild(description);
     }
     )
 
@@ -289,6 +266,7 @@ function createNeuroLearnElement(highlights) {
     const aiCoach = document.createElement('input');
     aiCoach.style.background = 'rgba(255, 255, 255, 0.5)';
     aiCoach.style.borderRadius = '20px';
+    aiCoach.style.padding = '10px 20px';
     aiCoach.style.marginTop = '15px';
     aiCoach.placeholder = 'Ask your AI coach...';
     aiCoach.style.fontSize = '16px';
@@ -314,8 +292,8 @@ function createNeuroLearnElement(highlights) {
     aiCoachButton.style.background = '#00d4ff';
     aiCoachButton.style.color = 'white';
     aiCoachButton.style.borderRadius = '20px';
-    aiCoachButton.style.marginTop = '15px';
     aiCoachButton.style.padding = '10px 20px';
+    aiCoachButton.style.marginTop = '15px';
     aiCoachButton.style.marginLeft = '10px'; // Added padding between text area and the button
     aiCoachButton.style.fontSize = '20px';
     aiCoachButton.style.border = 'none';
@@ -342,50 +320,7 @@ function createNeuroLearnElement(highlights) {
     newSection.style.right = '0'; // Position the new section at the right of the screen
     newSection.style.left = 'auto'; // Override any existing left positioning
 
-    // const socket = new WebSocket('ws://localhost:8080');
-    // let circleElement = createCircularElement(5); // Create the circular element with number 5
-    // newSection.appendChild(circleElement); // Append the circular element to the new section
-    
-    // socket.addEventListener('message', function (event) {
-    //     const data = JSON.parse(event.data);
-    //     if (data && data.focusProbability) {
-    //         // Update your circular element with the received data
-    //         const newCircleElement = createCircularElement(Math.round(data.focusProbability * 100));
-    //         console.log(Math.round(data.focusProbability * 100))
-    //         // Replace the old circular element with the new one in your DOM
-    //         newSection.replaceChild(newCircleElement, circleElement);
-    //         circleElement = newCircleElement;
-    //     }
-    // });
-
-    // const socket = new WebSocket('ws://localhost:8080');
     let circleElement = createCircularElement(5); // Create the circular element with number 5
-    newSection.appendChild(circleElement); // Append the circular element to the new section
-    
-    // socket.addEventListener('open', function () {
-    //     console.log('WebSocket connection established');
-    // });
-    
-    // socket.addEventListener('message', function (event) {
-    //     const data = JSON.parse(event.data);
-    //     console.log('Received data:', data);
-    //     if (data && data.focusProbability) {
-    //         // console.log('Received data:', data);
-    //         // Update your circular element with the received data
-    //         const newCircleElement = createCircularElement(Math.round(data.focusProbability * 100));
-    //         // Replace the old circular element with the new one in your DOM
-    //         newSection.replaceChild(newCircleElement, circleElement);
-    //         circleElement = newCircleElement;
-    //     }
-    // });
-    
-    // socket.addEventListener('error', function (error) {
-    //     console.log('WebSocket error:', error);
-    // });
-    
-    // socket.addEventListener('close', function () {
-    //     console.log('WebSocket connection closed');
-    // });
 
     chrome.runtime.onMessage.addListener(
         function(request, sender, sendResponse) {
