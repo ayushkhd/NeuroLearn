@@ -215,6 +215,7 @@ function createNeuroLearnElement(highlights, url) {
 
     // Title
     const titleContainer = document.createElement('div');
+    titleContainer.id = 'title_container';
     titleContainer.style.display = 'flex';
     titleContainer.style.justifyContent = 'space-between';
     titleContainer.style.alignItems = 'center';
@@ -223,7 +224,7 @@ function createNeuroLearnElement(highlights, url) {
     const title = document.createElement('h2');
     title.style.fontSize = '30px';
     title.style.marginTop = '10px';
-    title.style.marginLeft = '10px';
+    title.style.marginLeft = '30px';
     title.textContent = 'NeuroLearn';
     title.style.color = '#FFFFFF';  // Adjust title color as needed
     titleContainer.appendChild(title);
@@ -345,14 +346,14 @@ function createNeuroLearnElement(highlights, url) {
         text.style.color = 'rgba(0, 0, 0, 0.5)'; // Make the text more transparent
         highlight.appendChild(text);
 
-        const percentage = document.createElement('span');
-        percentage.textContent = index === 0 ? '75%' : '20%';
-        percentage.style.background = index === 0 ? 'limegreen' : 'red';
-        percentage.style.borderRadius = '5px';
-        percentage.style.padding = '5px 5px';
-        percentage.style.color = 'white';
-        percentage.style.fontSize = '18px';
-        highlight.appendChild(percentage);
+        // const percentage = document.createElement('span');
+        // percentage.textContent = index === 0 ? '75%' : '20%';
+        // percentage.style.background = index === 0 ? 'limegreen' : 'red';
+        // percentage.style.borderRadius = '5px';
+        // percentage.style.padding = '5px 5px';
+        // percentage.style.color = 'white';
+        // percentage.style.fontSize = '18px';
+        // highlight.appendChild(percentage);
 
         highlight.addEventListener('click', function () {
             document.getElementsByTagName('video')[0].currentTime = item.start_time;
@@ -431,7 +432,7 @@ function createNeuroLearnElement(highlights, url) {
     aiCoach.style.background = 'rgba(255, 255, 255, 0.5)';
     aiCoach.style.borderRadius = '20px';
     aiCoach.style.padding = '10px 20px';
-    aiCoach.style.marginTop = '15px';
+    // aiCoach.style.marginTop = 'px';
     aiCoach.placeholder = 'Ask your AI coach...';
     aiCoach.style.fontSize = '16px';
     aiCoach.style.fontFamily = 'Poppins, sans-serif'; // Make the font Poppins
@@ -458,7 +459,7 @@ function createNeuroLearnElement(highlights, url) {
     aiCoachButton.style.color = 'white';
     aiCoachButton.style.borderRadius = '20px';
     aiCoachButton.style.padding = '10px 20px';
-    aiCoachButton.style.marginTop = '15px';
+    // aiCoachButton.style.marginTop = '15px';
     aiCoachButton.style.marginLeft = '10px'; // Added padding between text area and the button
     aiCoachButton.style.fontSize = '20px';
     aiCoachButton.style.border = 'none';
@@ -487,9 +488,6 @@ newSection.style.display = 'flex';
 newSection.style.justifyContent = 'center';
 newSection.style.alignItems = 'center';
 newSection.style.marginTop = '20px';
-newSection.style.position = 'fixed';
-newSection.style.bottom = '0';
-newSection.style.right = '0';
 newSection.style.left = 'auto';
 
 // Create and append the initial circular element
@@ -505,7 +503,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         console.log("Content script received focus probability:", request.focusProbability);
         
         // Create a new circular element based on the received focus probability
-        const newCircleElement = createCircularElement(Math.round(request.focusProbability * 100));
+        
 
         // Replace the old circle with the new one
         newSection.replaceChild(newCircleElement, circleElement);
@@ -519,7 +517,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     flexDiv.appendChild(aiCoachButton);
 
     container.appendChild(flexDiv);
-    container.appendChild(newSection);
+    container.insertBefore(newSection, document.getElementById('title_container'));
 
     return container;
 }
@@ -618,7 +616,7 @@ function createNeuroLearnElementDupe(url) {
     container.style.background = 'linear-gradient(to bottom right, #2596be, #183d6e)';  // Gradient from #2596be to #183d6e at the low bottom right
     container.style.borderRadius = '10px';
     container.style.width = '28%';  // Adjust width as needed
-    container.style.marginBottom = '20px';
+    container.style.marginBottom = '10px';
     container.style.zIndex = '31';
 
     // Title
@@ -631,7 +629,7 @@ function createNeuroLearnElementDupe(url) {
     const title = document.createElement('h2');
     title.style.fontSize = '30px';
     title.style.marginTop = '10px';
-    title.style.marginLeft = '10px';
+    title.style.marginLeft = '30px';
     title.textContent = 'NeuroLearn';
     title.style.color = '#FFFFFF';  // Adjust title color as needed
     titleContainer.appendChild(title);
