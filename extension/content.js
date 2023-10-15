@@ -58,6 +58,12 @@ function timeToSeconds(timeString) {
     return minutes * 60 + seconds;
 }
 
+function secondsToTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+}
+
 
 chrome.runtime.onMessage.addListener(
     (request, sender, sendResponse) => {
@@ -233,8 +239,11 @@ function createNeuroLearnElement(highlights) {
         highlight.style.justifyContent = 'space-between';
         highlight.style.alignItems = 'center';
 
+        start_time = secondsToTime(item.start_time);
+        end_time = secondsToTime(item.end_time);
+
         const text = document.createElement('span');
-        text.textContent = `Highlight ${index + 1}: ${item.start_time} - ${item.end_time}`;
+        text.textContent = `Highlight ${index + 1}: ${start_time} - ${end_time}`;
         text.style.fontSize = '18px';
         highlight.appendChild(text);
 
