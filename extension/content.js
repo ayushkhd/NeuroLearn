@@ -164,6 +164,9 @@ if (result) {
         console.log("boutta remove")
         filteredElement.remove();
 
+        const neuroLearnElement = createNeuroLearnElement();
+        parentElement.appendChild(neuroLearnElement);
+
         return {
             filteredElement: filteredElement,
             parentElement: parentElement
@@ -175,4 +178,48 @@ if (result) {
 
 // Example usage:
 console.log("calling func")
+
+
+function createNeuroLearnElement() {
+    const container = document.createElement('div');
+    container.style.background = 'linear-gradient(#8B5DF8, white)';  // Gradient from purple to white
+    container.style.padding = '10px';
+    container.style.borderRadius = '10px';
+    container.style.width = '300px';  // Adjust width as needed
+    container.style.marginBottom = '20px';
+    
+    // Title
+    const title = document.createElement('h2');
+    title.style.fontSize = '30px';
+    title.style.marginTop = '10px';
+    title.style.marginLeft = '10px';
+    title.textContent = 'NeuroLearn';
+    title.style.color = '#FFFFFF';  // Adjust title color as needed
+    container.appendChild(title);
+
+    // Highlights
+    for (let i = 0; i < 3; i++) {
+        const highlight = document.createElement('div');
+        highlight.textContent = `Highlight 1 - Get the space`;
+        highlight.style.marginTop = '30px';
+        highlight.style.marginBottom = '30px';
+        highlight.style.fontSize = '15px';
+        highlight.style.color = '#FFFFFF';  // Adjust highlight color as needed
+        container.appendChild(highlight);
+    }
+
+    // Ask your AI coach button
+    const aiCoachButton = document.createElement('button');
+    aiCoachButton.textContent = 'Ask your AI coach...';
+    aiCoachButton.style.background = '#4C33E5';  // Adjust button colors as needed
+    aiCoachButton.style.color = 'white';
+    aiCoachButton.style.padding = '10px 20px';
+    aiCoachButton.style.border = 'none';
+    aiCoachButton.style.borderRadius = '5px';
+    aiCoachButton.style.cursor = 'pointer';
+    container.appendChild(aiCoachButton);
+
+    return container;
+}
+
 
