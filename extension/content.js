@@ -145,6 +145,8 @@ console.log("calling func")
 
 function createNeuroLearnElement(highlights) {
     const container = document.createElement('div');
+    container.className = 'style-scope ytd-watch-flexy';
+    container.id = 'secondary';
     container.style.background = 'linear-gradient(#13142f 30%, black)';  // Gradient from purple to black, with purple extending further
     container.style.padding = '10px';
     container.style.borderRadius = '10px';
