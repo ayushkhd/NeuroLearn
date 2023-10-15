@@ -1,11 +1,14 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from twelvelabs.client import Client
 
 app = FastAPI()
+
 
 class VideoHighlight(BaseModel):
     videoToHighlight: str
     objective: str
+
 
 @app.post("/videoHighlight")
 def highlight_video(video: VideoHighlight):
@@ -18,7 +21,7 @@ def highlight_video(video: VideoHighlight):
                 "order_number": 1,
                 "start_time": "00:00:10",
                 "end_time": "00:00:20",
-                "reason_for_highlight": "Interesting conversation"
+                "reason_for_highlight": "Interesting conversation",
             }
         ]
     }
