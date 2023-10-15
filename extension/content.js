@@ -199,14 +199,13 @@ function createNeuroLearnElement(highlights) {
     title.style.color = '#FFFFFF';  // Adjust title color as needed
     container.appendChild(title);
 
-    // Blob SVG
     const blobSvg = document.createElement('div');
     blobSvg.id = 'blob_svg';
     blobSvg.style.display = 'block'; // Ensure the SVG is displayed
 
     const blobImage = document.createElement('img');
     blobImage.id = 'blob_image';
-    blobImage.src = 'assets/blob.svg';
+    blobImage.src = 'https://gist.githubusercontent.com/ColabDog/be2c2c3dae7d31fd668783c480e7ebec/raw/14f5ebb6957e5ace159b5d05e986f36e2a32f801/blue_blob.svg';
     blobImage.alt = 'Blob SVG';
 
     blobSvg.appendChild(blobImage);
@@ -215,7 +214,7 @@ function createNeuroLearnElement(highlights) {
 
     // Highlights
     for (let i = 0; i < highlights.length; i++) {
-        const highlight = document.createElement('div');
+        const highlight = document.createElement('button');
 
         // Set the translucent bubble styles for each highlight
         highlight.style.background = 'rgba(255, 255, 255, 0.8)'; // More opaque than before
@@ -225,6 +224,15 @@ function createNeuroLearnElement(highlights) {
         highlight.style.display = 'flex';
         highlight.style.justifyContent = 'space-between';
         highlight.style.alignItems = 'center';
+        highlight.style.transition = 'transform 0.3s ease'; // Add transition for smooth hover effect
+
+        // Add hover effect to elevate the highlight
+        highlight.addEventListener('mouseover', function () {
+            this.style.transform = 'translateY(-3px)';
+        });
+        highlight.addEventListener('mouseout', function () {
+            this.style.transform = 'translateY(0)';
+        });
 
         const text = document.createElement('span');
         text.textContent = highlights[i].highlight; // Use the highlight text from the response
