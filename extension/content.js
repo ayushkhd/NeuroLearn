@@ -208,7 +208,7 @@ function createCircularElement(number) {
     circle.style.width = '100px'; // Set the width
     circle.style.height = '100px'; // Set the height
     circle.style.borderRadius = '50%'; // Make it circular
-    circle.style.backgroundColor = 'blue'; // Set the background color
+    circle.style.backgroundColor = '#00d4ff'; // Set the background color
     circle.style.display = 'flex'; // Use flexbox for centering
     circle.style.justifyContent = 'center'; // Center the content horizontally
     circle.style.alignItems = 'center'; // Center the content vertically
