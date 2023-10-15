@@ -211,7 +211,6 @@ function createNeuroLearnElement(highlights) {
 
     blobSvg.appendChild(blobImage);
     container.appendChild(blobSvg);
-    container.appendChild(title);
 
 
     // Highlights
