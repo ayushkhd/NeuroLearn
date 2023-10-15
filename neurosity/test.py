@@ -15,9 +15,5 @@ neurosity.login({
 
 def callback(data):
     print("data", data)
-    # Switch light off/on
-
-    # { probability: 0.93, label: "rightArm", timestamp: 1569961321174, metric: "kinesis" }
-
 
 unsubscribe = neurosity.kinesis("tongue", callback)
