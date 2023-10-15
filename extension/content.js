@@ -306,10 +306,10 @@ function createNeuroLearnElement(highlights) {
 
 
     // Event listener to auto-expand the textarea
-    aiCoach.addEventListener('input', function () {
-        this.style.height = 'auto';
-        this.style.height = (this.scrollHeight) + 'px';
-    });
+    // aiCoach.addEventListener('input', function () {
+    //     this.style.height = 'auto';
+    //     this.style.height = (this.scrollHeight) + 'px';
+    // });
     const aiCoachButton = document.createElement('button');
     aiCoachButton.innerHTML = '&#x27A4;'; // Unicode for rightwards arrow
     aiCoachButton.style.background = '#00d4ff';
