@@ -67,13 +67,13 @@ const getActiveTabUrl = () => {
 }
 
 const submitTimestamps = () => {
-  
+
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     const activeTab = tabs[0].id;
     console.log("sending message")
     chrome.tabs.sendMessage(
       activeTab,
-      { message: tabs[0].url,},
+      { message: tabs[0].url, },
       (response) => {
         if (response) {
           if (response.status === 'failed') {
@@ -115,39 +115,39 @@ document.getElementById('start-button').addEventListener('click', submitTimestam
 // });
 
 
-const { Neurosity } = require("@neurosity/sdk");
-require("dotenv").config();
+// const { Neurosity } = require("@neurosity/sdk");
+// require("dotenv").config();
 
-const deviceId = process.env.NEUROSITY_DEVICE_ID || ""
-const email = process.env.NEUROSITY_EMAIL || "";
-const password = process.env.NEUROSITY_PASSWORD || "";
+// const deviceId = process.env.NEUROSITY_DEVICE_ID || ""
+// const email = process.env.NEUROSITY_EMAIL || "";
+// const password = process.env.NEUROSITY_PASSWORD || "";
 
-const neurosity = new Neurosity({
-    deviceId
-  });
+// const neurosity = new Neurosity({
+//   deviceId
+// });
 
-const main = async () => {
-await neurosity
-    .login({
-    email,
-    password
-    })
-    .catch((error) => {
-    console.log(error);
-    throw new Error(error);
-    });
-console.log("Logged in");
+// const main = async () => {
+//   await neurosity
+//     .login({
+//       email,
+//       password
+//     })
+//     .catch((error) => {
+//       console.log(error);
+//       throw new Error(error);
+//     });
+//   console.log("Logged in");
 
-neurosity.focus().subscribe((focus) => {
-    if (focus.probability > 0.3) {
-      console.log("Hello World! ", focus.probability);
-      chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-        chrome.tabs.sendMessage(tabs[0].id, {focusProbability: focus.probability});
-      });
-    }
-  });
+//   neurosity.focus().subscribe((focus) => {
+//     if (focus.probability > 0.3) {
+//       console.log("Hello World! ", focus.probability);
+//       chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+//         chrome.tabs.sendMessage(tabs[0].id, { focusProbability: focus.probability });
+//       });
+//     }
+//   });
 
-};
+// };
 
 
-main();
+// main();

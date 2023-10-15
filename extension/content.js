@@ -11,8 +11,16 @@ function secondsToTime(seconds) {
     return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
 }
 
+const AUDIO_WAVE_SVGS = [
+    "https://gist.githubusercontent.com/ColabDog/166f74eafc06b13285cd4a38268f8d3e/raw/b868191314064d7120a1e8f5944b460c88fe63fa/audio-wave-5.svg",
+    "https://gist.githubusercontent.com/ColabDog/4dcfb4e1ae34dd8f31930f5ade26b204/raw/3574168948e5a1b828584997e9941c86a8434f53/audio-wave-4.svg",
+    "https://gist.githubusercontent.com/ColabDog/f860a07594eb306946568d01f2bdd877/raw/c3a3bc62cb2eb032040d67bf93a5d1ae3f154e82/audio-wave-3.svg",
+    "https://gist.githubusercontent.com/ColabDog/54bdaf7e183d8cc80fbfc43aad738386/raw/355a3518d7506729d7977d5fc5f61049931fcbec/audio-wave-2.svg",
+    "https://gist.githubusercontent.com/ColabDog/64d38f49798e52dc67006cc042a93c05/raw/8aed750cfa8a15173b93744343b4324758b34f60/audio-wave-1.svg"
+]
 
-async function playAudio(text) {
+async function playAudio(text, imageElement) {
+
     const voiceId = 'RE41IpVvESKH1SkTq04p';
     const apiKey = '925011858db6abb00c9dacdbb13ef2c3';
     const apiEndpoint = `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/stream`;
@@ -32,9 +40,17 @@ async function playAudio(text) {
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         const audioBuffer = await audioContext.decodeAudioData(audioArrayBuffer);
         const audioSource = audioContext.createBufferSource();
+        const duration = audioBuffer.duration * 1000;
+
         audioSource.buffer = audioBuffer;
         audioSource.connect(audioContext.destination);
         audioSource.start(0);
+        // on ended hide
+        // Add an event listener to hide the imageElement when the audio finishes playing
+        setTimeout(() => {
+            imageElement.style.display = 'none';
+        }, duration);
+
     } else {
         throw new Error(`Error: ${response.statusText}`);
     }
@@ -52,104 +68,103 @@ chrome.runtime.onMessage.addListener(
 
     })
 
-    generateOutputs = (context, url) => {
-        console.log(url)
+generateOutputs = (context, url) => {
+    console.log(url)
 
-        const player = document.getElementById("movie_player");
-        console.log(player);  // This should log the player object or null.
+    const player = document.getElementById("movie_player");
+    console.log(player);  // This should log the player object or null.
 
-        console.log(typeof player.seekTo);  // This should log "function" if it's available.
-
-
-        // This is the code you'll be injecting into the page
+    console.log(typeof player.seekTo);  // This should log "function" if it's available.
 
 
-        console.log("received message")
-
-        var videoHighlight = {
-            videoToHighlight: url,
-            objective: context,
-        };
+    // This is the code you'll be injecting into the page
 
 
-        fetch('https://166a-12-94-170-82.ngrok-free.app/videoHighlight/', {
-            // fetch('http://localhost:8000/videoHighlight/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(videoHighlight),
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
+    console.log("received message")
 
-                // Check if "highlights" array is present in the data
-                if (data.highlights && Array.isArray(data.highlights)) {
-                    data.highlights.forEach((highlight, index) => {
-                        console.log(`Highlight ${index + 1}:`);
-                        console.log(`Start Time: ${highlight.start_time}`);
-                        console.log(`End Time: ${highlight.end_time}`);
-
-                        const timeDuration = document.getElementsByClassName('ytp-time-duration')[0].innerHTML;
-
-                        const [minutes, seconds] = timeDuration.split(":").map(Number);
-                        const totalSeconds = minutes * 60 + seconds;
-
-                        const progressBar = document.getElementsByClassName('ytp-progress-bar-container')[0];
+    var videoHighlight = {
+        videoToHighlight: url,
+        objective: context,
+    };
 
 
-                        const totalDuration = totalSeconds; // Example value in seconds
+    // Start loading state
+    document.body.style.cursor = 'wait';
 
-                        const timestamp1 = highlight.start_time;
-                        const timestamp2 = highlight.end_time;
+    fetch('https://166a-12-94-170-82.ngrok-free.app/videoHighlight/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(videoHighlight),
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
 
-                        // Calculate position and width of the highlight based on timestamps
-                        const highlightPosition = (timestamp1 / totalDuration) * progressBar.offsetWidth;
-                        const highlightWidth = ((timestamp2 - timestamp1) / totalDuration) * progressBar.offsetWidth;
+            // End loading state
+            document.body.style.cursor = 'default';
 
-                        // Create and style the highlight element
-                        const greenHighlight = document.createElement('div');
-                        greenHighlight.style.position = 'absolute';
-                        greenHighlight.style.backgroundColor = 'green';
-                        greenHighlight.style.height = '100%';
-                        greenHighlight.style.width = `${highlightWidth}px`;
-                        greenHighlight.style.left = `${highlightPosition}px`;
-                        greenHighlight.style.zIndex = '1000';
-                        greenHighlight.style.touchAction = 'none';
-                        greenHighlight.role = 'slider';
-                        greenHighlight.tabIndex = '0';
-                        greenHighlight.draggable = true; // Prefer boolean values when applicable
+            // Check if "highlights" array is present in the data
+            if (data.highlights && Array.isArray(data.highlights)) {
+                data.highlights.forEach((highlight, index) => {
+                    console.log(`Highlight ${index + 1}:`);
+                    console.log(`Start Time: ${highlight.start_time}`);
+                    console.log(`End Time: ${highlight.end_time}`);
 
-                        console.log("appending highlight")
-                        // Append the highlight element to the progress bar
-                        progressBar.appendChild(greenHighlight);
+                    const timeDuration = document.getElementsByClassName('ytp-time-duration')[0].innerHTML;
 
+                    const [minutes, seconds] = timeDuration.split(":").map(Number);
+                    const totalSeconds = minutes * 60 + seconds;
 
-
-
-
-
-
+                    const progressBar = document.getElementsByClassName('ytp-progress-bar-container')[0];
 
 
+                    const totalDuration = totalSeconds; // Example value in seconds
 
-                    });
-                    let result = fetchElementAndParent(data.highlights, url);
-                    if (result) {
-                        console.log("Filtered element:", result.filteredElement);
-                        console.log("Parent of filtered element:", result.parentElement);
-                    } else {
-                        console.log("Element not found");
-                    }
+                    const timestamp1 = highlight.start_time;
+                    const timestamp2 = highlight.end_time;
+
+                    // Calculate position and width of the highlight based on timestamps
+                    const highlightPosition = (timestamp1 / totalDuration) * progressBar.offsetWidth;
+                    const highlightWidth = ((timestamp2 - timestamp1) / totalDuration) * progressBar.offsetWidth;
+
+                    // Create and style the highlight element
+                    const greenHighlight = document.createElement('div');
+                    greenHighlight.style.position = 'absolute';
+                    greenHighlight.style.backgroundColor = 'green';
+                    greenHighlight.style.height = '100%';
+                    greenHighlight.style.width = `${highlightWidth}px`;
+                    greenHighlight.style.left = `${highlightPosition}px`;
+                    greenHighlight.style.zIndex = '1000';
+                    greenHighlight.style.touchAction = 'none';
+                    greenHighlight.role = 'slider';
+                    greenHighlight.tabIndex = '0';
+                    greenHighlight.draggable = true; // Prefer boolean values when applicable
+
+                    console.log("appending highlight")
+                    // Append the highlight element to the progress bar
+                    progressBar.appendChild(greenHighlight);
+
+                });
+                let result = fetchElementAndParent(data.highlights, url);
+                if (result) {
+                    console.log("Filtered element:", result.filteredElement);
+                    console.log("Parent of filtered element:", result.parentElement);
+                } else {
+                    console.log("Element not found");
                 }
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+            }
+        })
+        .catch((error) => {
+            // End loading state in case of error
+            document.body.style.cursor = 'default';
+
+            console.error('Error:', error);
+        });
 
 
-    }
+}
 
 
 
@@ -162,7 +177,7 @@ function fetchElementAndParent(highlights, url) {
     if (!filteredElement) {
         filteredElement = document.querySelector('div.style-scope.ytd-watch-flexy#secondary');
     }
-    
+
     console.log("inside function")
 
     if (filteredElement) {
@@ -250,7 +265,7 @@ function createNeuroLearnElement(highlights, url) {
 
     const holdingDiv = document.createElement('div');
     holdingDiv.style.width = '100%';
-    
+
 
     const contextInput = document.createElement('input');
     contextInput.type = 'text';
@@ -278,7 +293,7 @@ function createNeuroLearnElement(highlights, url) {
     const submitButton = document.createElement('button');
     submitButton.type = 'submit';
     submitButton.textContent = 'Submit';
-    submitButton.addEventListener('click', function() {
+    submitButton.addEventListener('click', function () {
         generateOutputs(contextInput.value, url);
     });
 
@@ -411,7 +426,32 @@ function createNeuroLearnElement(highlights, url) {
 
             var video = document.getElementsByTagName('video')[0];
             video.pause();
-            playAudio(item.questions[0])
+
+            // Display the audio SVG images when audio is played
+            const images = AUDIO_WAVE_SVGS;
+            let currentImageIndex = 0;
+            const imageElement = document.createElement('img');
+            imageElement.src = images[currentImageIndex];
+            imageElement.style.opacity = '1'; // Set initial opacity to 1
+            imageElement.style.width = '500px'; // Set the width of the image to 500px
+            container.appendChild(imageElement);
+
+            // Set an interval to change the image source every 4 seconds (2 seconds for fading out and 2 seconds for fading in)
+            setInterval(function () {
+                currentImageIndex = (currentImageIndex + 1) % images.length; // Loop through the images
+
+                // Fade out the current image
+                imageElement.style.transition = 'opacity 20s ease-in-out';
+                imageElement.style.opacity = '0';
+
+                // After the current image fades out, change the image source and start fading it in
+                setTimeout(function () {
+                    imageElement.src = images[currentImageIndex];
+                    imageElement.style.opacity = '1';
+                }, 400); // Trigger after 2 seconds (2000 milliseconds), which is the time it takes for the current image to fade out
+            }, 120); // Change image every 4 seconds (4000 milliseconds)
+
+            playAudio(item.questions[0], imageElement);
 
         });
 
@@ -479,8 +519,8 @@ function createNeuroLearnElement(highlights, url) {
         pingAIQuestion(); // Call the function 'pingAIQuestion' when the button is clicked
     });
 
-// Assuming 'createCircularElement' is defined somewhere in your content.js
-// or in another JS file that gets loaded before content.js.
+    // Assuming 'createCircularElement' is defined somewhere in your content.js
+    // or in another JS file that gets loaded before content.js.
 
 // Create a new section for the circular element
 const newSection = document.createElement('div');
@@ -490,12 +530,12 @@ newSection.style.alignItems = 'center';
 newSection.style.marginTop = '20px';
 newSection.style.left = 'auto';
 
-// Create and append the initial circular element
-let circleElement = createCircularElement(5);
-newSection.appendChild(circleElement);
+    // Create and append the initial circular element
+    let circleElement = createCircularElement(5);
+    newSection.appendChild(circleElement);
 
-// Append the new section to the body, ensuring it's visible
-document.body.appendChild(newSection);
+    // Append the new section to the body, ensuring it's visible
+    document.body.appendChild(newSection);
 
 // Listen for messages from the background script
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
@@ -505,13 +545,16 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         // Create a new circular element based on the received focus probability
         
 
-        // Replace the old circle with the new one
-        newSection.replaceChild(newCircleElement, circleElement);
-        
-        // Update our reference to the current circle element
-        circleElement = newCircleElement;
-    }
-});
+            // Create a new circular element based on the received focus probability
+            const newCircleElement = createCircularElement(Math.round(request.focusProbability * 100));
+
+            // Replace the old circle with the new one
+            newSection.replaceChild(newCircleElement, circleElement);
+
+            // Update our reference to the current circle element
+            circleElement = newCircleElement;
+        }
+    });
 
     flexDiv.appendChild(aiCoach);
     flexDiv.appendChild(aiCoachButton);
@@ -655,7 +698,7 @@ function createNeuroLearnElementDupe(url) {
 
     const holdingDiv = document.createElement('div');
     holdingDiv.style.width = '100%';
-    
+
 
     const contextInput = document.createElement('input');
     contextInput.type = 'text';
@@ -683,7 +726,7 @@ function createNeuroLearnElementDupe(url) {
     const submitButton = document.createElement('button');
     submitButton.type = 'submit';
     submitButton.textContent = 'Submit';
-    submitButton.addEventListener('click', function() {
+    submitButton.addEventListener('click', function () {
         generateOutputs(contextInput.value, url);
     });
 
