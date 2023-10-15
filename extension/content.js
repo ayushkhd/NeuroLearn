@@ -136,7 +136,7 @@ console.log("calling func")
 
 function createNeuroLearnElement(highlights) {
     const container = document.createElement('div');
-    container.style.background = 'linear-gradient(#13142f, black)';  // Gradient from purple to white
+    container.style.background = 'linear-gradient(#13142f 30%, black)';  // Gradient from purple to black, with purple extending further
     container.style.padding = '10px';
     container.style.borderRadius = '10px';
     container.style.width = '300px';  // Adjust width as needed
