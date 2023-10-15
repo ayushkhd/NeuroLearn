@@ -75,7 +75,7 @@ def highlight_video(video: VideoHighlight):
                     start_time=840,
                     end_time=1065,
                     highlight="The span of any set of vectors is a valid subspace",
-                    reason_for_highlight="The video explains that the span of any set of vectors is a valid subspace, using examples and mathematical explanations.",
+                    reason_for_highlight="Understanding the concept of vector subspace can help in improving search algorithms, particularly in relation to multi-dimensional data structures. This concept could potentially result in more efficient video search engine design through optimising data cataloguing and retrieval.",
                     questions=["What makes the span of any set of vectors a valid subspace?"]
                 ),
                 Highlight(
@@ -83,7 +83,7 @@ def highlight_video(video: VideoHighlight):
                     start_time=1230,
                     end_time=1350,
                     highlight="The span of one vector is not always a valid subspace",
-                    reason_for_highlight="The video demonstrates that the span of one vector is not always a valid subspace, using visuals and mathematical explanations.",
+                    reason_for_highlight="This highlight could be relevant because it provides a core mathematical concept that could be used in the algorithmic design of a video search, particularly when indexing or categorizing video content for optimal search results.",
                     questions=["Under what conditions would the span of one vector not be a valid subspace?"]
                 ),
                 Highlight(
@@ -91,7 +91,7 @@ def highlight_video(video: VideoHighlight):
                     start_time=450,
                     end_time=465,
                     highlight="The zero vector is always contained in a subspace",
-                    reason_for_highlight="The video explains that the zero vector is always contained in a subspace, regardless of the vector set.",
+                    reason_for_highlight="This concept is relevant as it pertains to linear algebra, which is fundamental in many fields including software engineering. Specifically in building a video search, it can help in understanding and developing algorithms related to video data processing, search optimization, and feature representation.",
                     questions=["Why is the zero vector always contained in a subspace?"]
                 )
             ]
