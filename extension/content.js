@@ -11,6 +11,13 @@ function secondsToTime(seconds) {
     return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
 }
 
+chrome.runtime.onMessage.addListener(
+    (request, sender, sendResponse) => {
+        
+
+
+
+    })
 
 chrome.runtime.onMessage.addListener(
     (request, sender, sendResponse) => {
