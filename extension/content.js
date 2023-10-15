@@ -134,10 +134,9 @@ function fetchElementAndParent(highlights) {
 // Example usage:
 console.log("calling func")
 
-
 function createNeuroLearnElement(highlights) {
     const container = document.createElement('div');
-    container.style.background = 'linear-gradient(#8B5DF8, white)';  // Gradient from purple to white
+    container.style.background = 'linear-gradient(#13142f, black)';  // Gradient from purple to white
     container.style.padding = '10px';
     container.style.borderRadius = '10px';
     container.style.width = '300px';  // Adjust width as needed
@@ -200,7 +199,7 @@ function createNeuroLearnElement(highlights) {
         const percentage = document.createElement('span');
         percentage.textContent = index === 0 ? '75%' : '20%';
         percentage.style.background = index === 0 ? 'limegreen' : 'red';
-        percentage.style.borderRadius = '50%';
+        percentage.style.borderRadius = '5px';
         percentage.style.padding = '5px 5px';
         percentage.style.color = 'white';
         percentage.style.fontSize = '18px';
