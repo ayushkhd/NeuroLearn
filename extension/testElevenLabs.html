@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Include any necessary scripts or styles here -->
+</head>
+<body>
+    <!-- Your HTML content -->
+
+    <button onclick="playAudio('RE41IpVvESKH1SkTq04p', '925011858db6abb00c9dacdbb13ef2c3', 'Your text to convert to speech')">Play Audio</button>
+
+    <!-- Rest of your HTML content -->
+
+    <script>
+        async function playAudio(voiceId, apiKey, text) {
+            text = "As a leader, I've always aimed to surround myself with the best and the brightest, those who are not just experts in their fields but who share a passion for our mission. Building a team that shares a vision and collaborates relentlessly is the secret to achieving the extraordinary";
+            const apiEndpoint = `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/stream`;
+            const requestOptions = {
+                method: "POST",
+                headers: new Headers({
+                    "xi-api-key": apiKey,
+                    "Content-Type": "application/json",
+                }),
+                body: JSON.stringify({ text: text }),
+            };
+
+            const response = await fetch(apiEndpoint, requestOptions);
+            if (response.status === 200) {
+                const audioArrayBuffer = await response.arrayBuffer();
+
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const audioBuffer = await audioContext.decodeAudioData(audioArrayBuffer);
+                const audioSource = audioContext.createBufferSource();
+                audioSource.buffer = audioBuffer;
+                audioSource.connect(audioContext.destination);
+                audioSource.start(0);
+            } else {
+                throw new Error(`Error: ${response.statusText}`);
+            }
+        }
+    </script>
+</body>
+</html>
