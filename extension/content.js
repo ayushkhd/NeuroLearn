@@ -237,6 +237,7 @@ function createNeuroLearnElement(highlights) {
     aiCoachButton.style.borderRadius = '20px';
     aiCoachButton.style.padding = '10px 20px';
     aiCoachButton.style.marginTop = '15px';
+    aiCoachButton.style.marginLeft = '10px'; // Added padding between text area and the button
     aiCoachButton.style.fontSize = '20px';
     aiCoachButton.style.border = 'none';
     aiCoachButton.style.cursor = 'pointer';
