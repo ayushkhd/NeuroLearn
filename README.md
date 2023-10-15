@@ -1,4 +1,4 @@
-# neurolearn
+# NeuroLearn
 
 NeuroLearn harnesses the power of AI and neurofeedback to deliver personalized learning experiences, ensuring every student stays engaged and amplify student success.
 
