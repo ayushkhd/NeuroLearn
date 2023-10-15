@@ -1,61 +1,14 @@
 console.log("Content script has loaded and is running!");
 
-// chrome.runtime.onMessage.addListener(
-//     (request, sender, sendResponse) => {
-
-//         console.log("received message")
-
-//         // const timestamp1 = request.message;
-//         // const timestamp2 = request.content;
-
-//         const timeDuration = document.getElementsByClassName('ytp-time-duration')[0].innerHTML;
-
-//         const [minutes, seconds] = timeDuration.split(":").map(Number);
-//         const totalSeconds = minutes * 60 + seconds;
-
-
-//         // Assuming progressBar is the element representing the progress bar and its width can be used to calculate the position and size of the highlight
-//         const progressBar = document.getElementsByClassName('ytp-progress-bar-container')[0];
-
-//         // Assuming timestamp1 and timestamp2 are in seconds and represent a portion of the video's total duration
-//         const timestamp1 = timeToSeconds(request.message); 
-//     const timestamp2 = timeToSeconds(request.content); 
-
-//         // Assuming totalDuration represents the total duration of the video in seconds
-//         const totalDuration = totalSeconds; // Example value in seconds
-
-//         // Calculate position and width of the highlight based on timestamps
-//         const highlightPosition = (timestamp1 / totalDuration) * progressBar.offsetWidth;
-//         const highlightWidth = ((timestamp2 - timestamp1) / totalDuration) * progressBar.offsetWidth;
-
-//         // Create and style the highlight element
-//         const highlight = document.createElement('div');
-//         highlight.style.position = 'absolute';
-//         highlight.style.backgroundColor = 'green';
-//         highlight.style.height = '100%';
-//         highlight.style.width = `${highlightWidth}px`;
-//         highlight.style.left = `${highlightPosition}px`;
-//         highlight.style.zIndex = '1000';
-//         highlight.style.touchAction = 'none';
-//         highlight.role = 'slider';
-//         highlight.tabIndex = '0';  
-//         highlight.draggable = true; // Prefer boolean values when applicable
-
-//         console.log("appending highlight")
-//         // Append the highlight element to the progress bar
-//         progressBar.appendChild(highlight);
-
-
-
-
-//         console.log("returning true")
-//         sendResponse({ status: 'success' });
-//     }
-//   );
-
 function timeToSeconds(timeString) {
     const [minutes, seconds] = timeString.split(":").map(Number);
     return minutes * 60 + seconds;
+}
+
+function secondsToTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
 }
 
 
@@ -64,15 +17,24 @@ chrome.runtime.onMessage.addListener(
 
         console.log(request.url)
 
+        const player = document.getElementById("movie_player");
+        console.log(player);  // This should log the player object or null.
+
+        console.log(typeof player.seekTo);  // This should log "function" if it's available.
+
+
+        // This is the code you'll be injecting into the page
+
+
         console.log("received message")
 
         var videoHighlight = {
             videoToHighlight: request.url,
-            objective: 'Generate a summary suitable for a software engineer building video search.',
+            objective: request.message,
         };
 
 
-        fetch('https://30a0-12-94-170-82.ngrok-free.app/videoHighlight/', {
+        fetch('https://166a-12-94-170-82.ngrok-free.app/videoHighlight/', {
             // fetch('http://localhost:8000/videoHighlight/', {
             method: 'POST',
             headers: {
@@ -128,19 +90,20 @@ chrome.runtime.onMessage.addListener(
 
 
 
-                        let result = fetchElementAndParent();
-                        if (result) {
-                            console.log("Filtered element:", result.filteredElement);
-                            console.log("Parent of filtered element:", result.parentElement);
-                        } else {
-                            console.log("Element not found");
-                        }
+
 
 
 
 
 
                     });
+                    let result = fetchElementAndParent(data.highlights);
+                    if (result) {
+                        console.log("Filtered element:", result.filteredElement);
+                        console.log("Parent of filtered element:", result.parentElement);
+                    } else {
+                        console.log("Element not found");
+                    }
                 }
             })
             .catch((error) => {
@@ -152,7 +115,7 @@ chrome.runtime.onMessage.addListener(
     }
 );
 
-function fetchElementAndParent() {
+function fetchElementAndParent(highlights) {
     // Fetch the specific div element with the given class and ID
     let filteredElement = document.querySelector('div.style-scope.ytd-watch-flexy#secondary');
     console.log("inside function")
@@ -165,7 +128,7 @@ function fetchElementAndParent() {
         console.log("boutta remove")
         filteredElement.remove();
 
-        const neuroLearnElement = createNeuroLearnElement();
+        const neuroLearnElement = createNeuroLearnElement(highlights);
         parentElement.appendChild(neuroLearnElement);
 
         return {
@@ -180,13 +143,27 @@ function fetchElementAndParent() {
 // Example usage:
 console.log("calling func")
 
+function createCircularElement(number) {
+    const circle = document.createElement('div');
+    circle.style.width = '100px'; // Set the width
+    circle.style.height = '100px'; // Set the height
+    circle.style.borderRadius = '50%'; // Make it circular
+    circle.style.backgroundColor = 'blue'; // Set the background color
+    circle.style.display = 'flex'; // Use flexbox for centering
+    circle.style.justifyContent = 'center'; // Center the content horizontally
+    circle.style.alignItems = 'center'; // Center the content vertically
+    circle.style.color = 'white'; // Set the text color
+    circle.style.fontSize = '20px'; // Set the font size
+    circle.textContent = number; // Set the number
 
-function createNeuroLearnElement() {
+    return circle;
+}
+
+function createNeuroLearnElement(highlights) {
     const container = document.createElement('div');
-    container.style.background = 'linear-gradient(#8B5DF8, white)';  // Gradient from purple to white
-    container.style.padding = '10px';
-    container.style.borderRadius = '10px';
-    container.style.width = '300px';  // Adjust width as needed
+    container.style.background = 'linear-gradient(to right, #020024, #090979, #00d4ff)';  // Gradient from dark blue to vibrant purple
+     container.style.borderRadius = '10px';
+    container.style.width = '28%';  // Adjust width as needed
     container.style.marginBottom = '20px';
     container.style.zIndex = '99999999';
 
@@ -213,6 +190,9 @@ function createNeuroLearnElement() {
     blobImage.src = 'https://gist.githubusercontent.com/ColabDog/be2c2c3dae7d31fd668783c480e7ebec/raw/d63bc5aaa982da97bf083b391ca54638b6fbc4f7/blue_blob.svg';
     blobImage.alt = 'Blob SVG';
 
+    // Add CSS animation to make the SVG zoom in and out
+    blobImage.style.animation = 'zoomInOut 2s infinite';
+
     blobSvg.appendChild(blobImage);
     titleContainer.appendChild(blobSvg);
 
@@ -220,7 +200,7 @@ function createNeuroLearnElement() {
 
 
     // Highlights
-    for (let i = 0; i < 3; i++) {
+    highlights.forEach((item, index) => {
         const highlight = document.createElement('div');
 
         // Set the translucent bubble styles for each highlight
@@ -232,30 +212,39 @@ function createNeuroLearnElement() {
         highlight.style.justifyContent = 'space-between';
         highlight.style.alignItems = 'center';
 
+        start_time = secondsToTime(item.start_time);
+        end_time = secondsToTime(item.end_time);
+
         const text = document.createElement('span');
-        text.textContent = `Highlight 1 - Get the space`;
+        text.textContent = `Highlight ${index + 1}: ${start_time} - ${end_time}`;
         text.style.fontSize = '18px';
         highlight.appendChild(text);
 
         const percentage = document.createElement('span');
-        percentage.textContent = i === 0 ? '75%' : '20%';
-        percentage.style.background = i === 0 ? 'limegreen' : 'red';
-        percentage.style.borderRadius = '50%';
-        percentage.style.padding = '5px 15px';
+        percentage.textContent = index === 0 ? '75%' : '20%';
+        percentage.style.background = index === 0 ? 'limegreen' : 'red';
+        percentage.style.borderRadius = '5px';
+        percentage.style.padding = '5px 5px';
         percentage.style.color = 'white';
         percentage.style.fontSize = '18px';
         highlight.appendChild(percentage);
 
+        highlight.addEventListener('click', function() {
+            document.getElementsByTagName('video')[0].currentTime = item.start_time;
+        });
+
+        highlight.style.cursor = 'pointer';
+
         container.appendChild(highlight);
     }
+    )
 
     const flexDiv = document.createElement('div');
     flexDiv.style.display = 'flex';
     flexDiv.style.justifyContent = 'space-between';
     flexDiv.style.alignItems = 'center';
 
-    const aiCoach = document.createElement('input');
-    aiCoach.type = 'text';
+    const aiCoach = document.createElement('textarea');
     aiCoach.style.background = 'rgba(255, 255, 255, 0.8)';
     aiCoach.style.borderRadius = '20px';
     aiCoach.style.padding = '10px 20px';
@@ -263,25 +252,49 @@ function createNeuroLearnElement() {
     aiCoach.placeholder = 'Ask your AI coach...';
     aiCoach.style.fontSize = '20px';
     aiCoach.style.textAlign = 'center';
+    aiCoach.style.overflow = 'hidden';
+    aiCoach.style.resize = 'none';
 
+    // Event listener to auto-expand the textarea
+    aiCoach.addEventListener('input', function () {
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight) + 'px';
+    });
     const aiCoachButton = document.createElement('button');
-    aiCoachButton.textContent = 'Send';
+    aiCoachButton.innerHTML = '&#x27A4;'; // Unicode for rightwards arrow
     aiCoachButton.style.background = '#8B5DF8';
     aiCoachButton.style.color = 'white';
     aiCoachButton.style.borderRadius = '20px';
     aiCoachButton.style.padding = '10px 20px';
     aiCoachButton.style.marginTop = '15px';
+    aiCoachButton.style.marginLeft = '10px'; // Added padding between text area and the button
     aiCoachButton.style.fontSize = '20px';
     aiCoachButton.style.border = 'none';
     aiCoachButton.style.cursor = 'pointer';
     aiCoachButton.style.outline = 'none';
     aiCoachButton.style.fontWeight = 'bold';
 
+    const newSection = document.createElement('div');
+    newSection.style.display = 'flex';
+    newSection.style.justifyContent = 'center';
+    newSection.style.alignItems = 'center';
+    newSection.style.marginTop = '20px'; // Add some margin at the top for spacing
+    newSection.style.position = 'fixed'; 
+    newSection.style.bottom = '0'; 
+    newSection.style.right = '0'; // Position the new section at the right of the screen
+    newSection.style.left = 'auto'; // Override any existing left positioning
+
+
+    const circleElement = createCircularElement(5); // Create the circular element with number 5
+    newSection.appendChild(circleElement); // Append the circular element to the new section
+
 
     flexDiv.appendChild(aiCoach);
     flexDiv.appendChild(aiCoachButton);
 
     container.appendChild(flexDiv);
+    container.appendChild(newSection);
+
     return container;
 }
 

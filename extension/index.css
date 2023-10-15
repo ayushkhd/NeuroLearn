@@ -28,3 +28,17 @@ body {
 #blob_image {
     animation: animateScale 2s infinite;
 }
+
+@-webkit-keyframes zoomInOut {
+    0% {
+        -webkit-transform: scale(0.8);
+    }
+
+    50% {
+        -webkit-transform: scale(1.1);
+    }
+
+    100% {
+        -webkit-transform: scale(0.8);
+    }
+}
