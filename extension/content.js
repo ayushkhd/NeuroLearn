@@ -287,6 +287,7 @@ function createNeuroLearnElement(highlights) {
     flexDiv.style.alignItems = 'center';
 
     const aiCoach = document.createElement('input');
+    aiCoach.id = 'chatQueryInput';
     aiCoach.style.background = 'rgba(255, 255, 255, 0.5)';
     aiCoach.style.borderRadius = '20px';
     aiCoach.style.marginTop = '15px';
@@ -330,6 +331,9 @@ function createNeuroLearnElement(highlights) {
     });
     aiCoachButton.addEventListener('mouseout', function() {
         this.style.transform = 'scale(1.0)'; // Return to original size when not hovering
+    });
+    aiCoachButton.addEventListener('click', function() {
+        pingAIQuestion(); // Call the function 'pingAIQuestion' when the button is clicked
     });
 
     const newSection = document.createElement('div');
@@ -408,3 +412,30 @@ function createNeuroLearnElement(highlights) {
     return container;
 }
 
+
+pingAIQuestion = () => {
+    console.log("pinging AI")
+    const input = document.getElementById('chatQueryInput');
+    const question = input.value;
+    let stuff = {
+        "query": question
+    };
+    fetch('https://166a-12-94-170-82.ngrok-free.app/chatQuery/', {
+            // fetch('http://localhost:8000/videoHighlight/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(stuff),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+
+
+
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+}
