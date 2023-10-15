@@ -241,6 +241,7 @@ function createNeuroLearnElement(highlights, url) {
     contextInput.style.height = '100%'; // Add this line to make the text vertically centered
     contextInput.style.boxShadow = '0px 4px 8px 0px rgba(0, 0, 0, 0.2)'; // Add drop shadow
     contextInput.style.padding = '10px 20px';
+    contextInput.style.marginBottom = '10px';
 
     holdingDiv.appendChild(contextInput);
 
@@ -268,6 +269,7 @@ function createNeuroLearnElement(highlights, url) {
     contextInput.style.height = '100%'; // Add this line to make the text vertically centered
     submitButton.style.transition = 'all 0.3s ease'; // Add transition for smooth animation
     submitButton.style.boxShadow = '0px 4px 8px 0px rgba(0, 0, 0, 0.2)'; // Add drop shadow
+    submitButton.style.marginLeft = '20px';
 
     submitButton.style.width = '90%';
 
@@ -290,8 +292,8 @@ function createNeuroLearnElement(highlights, url) {
         highlight.style.justifyContent = 'space-between';
         highlight.style.alignItems = 'center';
         highlight.style.boxShadow = '0px 5px 15px rgba(0, 0, 0, 0.3)'; // Add stronger drop shadow
-        highlight.style.marginLeft = '10px';
-        highlight.style.marginRight = '10px';
+        highlight.style.marginLeft = '20px';
+        highlight.style.marginRight = '20px';
         highlight.style.transition = 'all 0.3s ease'; // Add transition for smooth animation
 
         // Add hover effect
@@ -371,7 +373,7 @@ function createNeuroLearnElement(highlights, url) {
     aiCoach.placeholder = 'Ask your AI coach...';
     aiCoach.style.fontSize = '16px';
     aiCoach.style.fontFamily = 'Poppins, sans-serif'; // Make the font Poppins
-    aiCoach.style.marginLeft = '10px';
+    aiCoach.style.marginLeft = '20px';
     aiCoach.style.width = '100%';
     aiCoach.style.display = 'flex';
     aiCoach.style.alignItems = 'center';
@@ -436,7 +438,7 @@ function createNeuroLearnElement(highlights, url) {
             circleElement = newCircleElement;
           }
         });
-    flexDiv.style.marginRight = '10px';
+    flexDiv.style.marginRight = '20px';
     flexDiv.appendChild(aiCoach);
     flexDiv.appendChild(aiCoachButton);
 
