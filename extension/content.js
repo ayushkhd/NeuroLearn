@@ -269,7 +269,7 @@ function createNeuroLearnElement(highlights) {
 
     const flexDiv = document.createElement('div');
     flexDiv.style.display = 'flex';
-    flexDiv.style.justifyContent = 'space-evenly';
+    flexDiv.style.justifyContent = 'space-between';
     flexDiv.style.alignItems = 'center';
 
     const aiCoach = document.createElement('textarea');
@@ -280,6 +280,7 @@ function createNeuroLearnElement(highlights) {
     aiCoach.style.fontSize = '16px';
     aiCoach.style.fontFamily = 'Poppins, sans-serif'; // Make the font Poppins
     aiCoach.style.marginLeft = '10px';
+    aiCoach.style.width = '100%';
 
 
     // Event listener to auto-expand the textarea
