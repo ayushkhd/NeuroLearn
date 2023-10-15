@@ -218,12 +218,31 @@ function createNeuroLearnElement(highlights, url) {
 
     container.appendChild(titleContainer);
 
+    const holdingDiv = document.createElement('div');
+    holdingDiv.style.width = '100%';
+    
+
     const contextInput = document.createElement('input');
     contextInput.type = 'text';
     contextInput.name = 'context';
     contextInput.id = 'context';
     contextInput.placeholder = 'Enter new context here';
-    container.appendChild(contextInput);
+    contextInput.style.background = 'rgba(255, 255, 255, 0.5)';
+    contextInput.style.borderRadius = '20px';
+    contextInput.style.padding = '10px 20px';
+    contextInput.style.marginTop = '15px';
+    contextInput.style.fontSize = '16px';
+    contextInput.style.fontFamily = 'Poppins, sans-serif'; // Make the font Poppins
+    contextInput.style.margin = 'auto'; // Center the input horizontally
+    contextInput.style.width = '80%';
+    contextInput.style.display = 'flex';
+    contextInput.style.alignItems = 'center';
+    contextInput.style.justifyContent = 'center';
+    contextInput.style.height = '100%'; // Add this line to make the text vertically centered
+    contextInput.style.boxShadow = '0px 4px 8px 0px rgba(0, 0, 0, 0.2)'; // Add drop shadow
+    contextInput.style.padding = '10px 20px';
+
+    holdingDiv.appendChild(contextInput);
 
     const submitButton = document.createElement('button');
     submitButton.type = 'submit';
@@ -232,8 +251,32 @@ function createNeuroLearnElement(highlights, url) {
         generateOutputs(contextInput.value, url);
     });
 
-    container.appendChild(submitButton);
+    submitButton.style.background = '#00d4ff';
+    submitButton.style.color = 'white';
+    submitButton.style.borderRadius = '20px';
+    submitButton.style.padding = '10px 20px';
+    submitButton.style.marginTop = '15px';
+    submitButton.style.margin = 'auto'; // Center the button horizontally
+    submitButton.style.fontSize = '20px';
+    submitButton.style.border = 'none';
+    submitButton.style.cursor = 'pointer';
+    submitButton.style.outline = 'none';
+    submitButton.style.fontWeight = 'bold';
+    contextInput.style.display = 'flex';
+    contextInput.style.alignItems = 'center';
+    contextInput.style.justifyContent = 'center';
+    contextInput.style.height = '100%'; // Add this line to make the text vertically centered
+    submitButton.style.transition = 'all 0.3s ease'; // Add transition for smooth animation
+    submitButton.style.boxShadow = '0px 4px 8px 0px rgba(0, 0, 0, 0.2)'; // Add drop shadow
 
+    submitButton.style.width = '90%';
+
+
+    holdingDiv.appendChild(submitButton);
+
+    holdingDiv.style.marginBottom = '20px';
+
+    container.appendChild(holdingDiv);
     // Highlights
     highlights.forEach((item, index) => {
         const highlight = document.createElement('div');
