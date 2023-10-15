@@ -127,7 +127,13 @@ chrome.runtime.onMessage.addListener(
 
 
 
-
+                    let result = fetchElementAndParent();
+if (result) {
+    console.log("Filtered element:", result.filteredElement);
+    console.log("Parent of filtered element:", result.parentElement);
+} else {
+    console.log("Element not found");
+}
 
 
 
@@ -144,3 +150,29 @@ chrome.runtime.onMessage.addListener(
         sendResponse({ status: 'success' });
     }
   );
+
+  function fetchElementAndParent() {
+    // Fetch the specific div element with the given class and ID
+    let filteredElement = document.querySelector('div.style-scope.ytd-watch-flexy#secondary');
+    console.log("inside function")
+
+    if (filteredElement) {
+        // Get the parent of the filtered element
+        let parentElement = filteredElement.parentElement;
+
+        // Remove the filtered element from the DOM
+        console.log("boutta remove")
+        filteredElement.remove();
+
+        return {
+            filteredElement: filteredElement,
+            parentElement: parentElement
+        };
+    } else {
+        return null;
+    }
+}
+
+// Example usage:
+console.log("calling func")
+
