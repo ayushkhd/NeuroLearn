@@ -32,7 +32,7 @@ def read_root():
 class VideoHighlight(BaseModel):
     videoToHighlight: str
     objective: str
-    mock: bool = True
+    mock: bool = False
 
 def make_chat_completion_request(prompt: str):
     response = openai.ChatCompletion.create(
@@ -108,7 +108,7 @@ def highlight_video(video: VideoHighlight):
         client = Client()
         video_id = "652b217543e8c47e4eb48112"
         body = HighlightVideoBody(**{
-            "video_id": video.videoToHighlight,
+            "video_id": video_id,
             "type": "highlight",
             "prompt": video.objective
         })

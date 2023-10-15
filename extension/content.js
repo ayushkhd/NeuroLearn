@@ -88,8 +88,10 @@ generateOutputs = (context, url) => {
     };
 
 
+    // Start loading state
+    document.body.style.cursor = 'wait';
+
     fetch('https://166a-12-94-170-82.ngrok-free.app/videoHighlight/', {
-        // fetch('http://localhost:8000/videoHighlight/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -99,6 +101,9 @@ generateOutputs = (context, url) => {
         .then(response => response.json())
         .then(data => {
             console.log(data);
+
+            // End loading state
+            document.body.style.cursor = 'default';
 
             // Check if "highlights" array is present in the data
             if (data.highlights && Array.isArray(data.highlights)) {
@@ -141,15 +146,6 @@ generateOutputs = (context, url) => {
                     // Append the highlight element to the progress bar
                     progressBar.appendChild(greenHighlight);
 
-
-
-
-
-
-
-
-
-
                 });
                 let result = fetchElementAndParent(data.highlights, url);
                 if (result) {
@@ -161,6 +157,9 @@ generateOutputs = (context, url) => {
             }
         })
         .catch((error) => {
+            // End loading state in case of error
+            document.body.style.cursor = 'default';
+
             console.error('Error:', error);
         });
 
