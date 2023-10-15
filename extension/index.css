@@ -10,3 +10,21 @@ body {
     width: 100%;
     margin-bottom: 10px;
 }
+
+@keyframes animateScale {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.5);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+#blob_image {
+    animation: animateScale 2s infinite;
+}
