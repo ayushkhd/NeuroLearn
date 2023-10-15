@@ -19,8 +19,8 @@ chrome.runtime.onMessage.addListener(
         };
 
 
-        // fetch('https://30a0-12-94-170-82.ngrok-free.app/videoHighlight/', {
-        fetch('http://localhost:8000/videoHighlight/', {
+        fetch('https://30a0-12-94-170-82.ngrok-free.app/videoHighlight/', {
+            // fetch('http://localhost:8000/videoHighlight/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
