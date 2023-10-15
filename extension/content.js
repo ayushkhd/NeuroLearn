@@ -199,6 +199,19 @@ function createNeuroLearnElement() {
     title.style.color = '#FFFFFF';  // Adjust title color as needed
     container.appendChild(title);
 
+    const blobSvg = document.createElement('div');
+    blobSvg.id = 'blob_svg';
+    blobSvg.style.display = 'block'; // Ensure the SVG is displayed
+
+    const blobImage = document.createElement('img');
+    blobImage.id = 'blob_image';
+    blobImage.src = 'assets/blob.svg';
+    blobImage.alt = 'Blob SVG';
+
+    blobSvg.appendChild(blobImage);
+    container.appendChild(blobSvg);
+
+
     // Highlights
     for (let i = 0; i < 3; i++) {
         const highlight = document.createElement('div');
