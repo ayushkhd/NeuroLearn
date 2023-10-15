@@ -70,6 +70,19 @@ chrome.runtime.onMessage.addListener(
 
         console.log(request.url)
 
+        const player = document.getElementById("movie_player");
+        console.log(player);  // This should log the player object or null.
+
+        console.log(typeof player.seekTo);  // This should log "function" if it's available.
+
+
+
+        document.getElementsByTagName('video')[0].currentTime = 20
+
+
+        // This is the code you'll be injecting into the page
+
+
         console.log("received message")
 
         var videoHighlight = {

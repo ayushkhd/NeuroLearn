@@ -69,8 +69,7 @@ const getActiveTabUrl = () => {
 const submitTimestamps = () => {
   const contextInput = document.getElementById('context-input').value;
   console.log("found context input")
-
-
+  
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     const activeTab = tabs[0].id;
     console.log("sending message")
