@@ -1,31 +1,31 @@
 const checkForKey = () => {
-    return new Promise((resolve, reject) => {
-      chrome.storage.local.get(['openai-key'], (result) => {
-        resolve(result['openai-key']);
-      });
+  return new Promise((resolve, reject) => {
+    chrome.storage.local.get(['openai-key'], (result) => {
+      resolve(result['openai-key']);
     });
-  };
+  });
+};
 
 const encode = (input) => {
-    return btoa(input);
-  };
+  return btoa(input);
+};
 
 const saveKey = () => {
-    const input = document.getElementById('key_input');
-  
-    if (input) {
-      const { value } = input;
-  
-      // Encode String
-      const encodedValue = encode(value);
-  
-      // Save to google storage
-      chrome.storage.local.set({ 'openai-key': encodedValue }, () => {
-        document.getElementById('key_needed').style.display = 'none';
-        document.getElementById('key_entered').style.display = 'block';
-      });
-    }
-  };
+  const input = document.getElementById('key_input');
+
+  if (input) {
+    const { value } = input;
+
+    // Encode String
+    const encodedValue = encode(value);
+
+    // Save to google storage
+    chrome.storage.local.set({ 'openai-key': encodedValue }, () => {
+      document.getElementById('key_needed').style.display = 'none';
+      document.getElementById('key_entered').style.display = 'block';
+    });
+  }
+};
 
 const getKey = () => {
   return new Promise((resolve, reject) => {
@@ -44,12 +44,12 @@ const submitQuestion = async () => {
   const key = await getKey();
 
   try {
-      let activeTab = await getActiveTabUrl();
-      console.log(question);
-      console.log(key);
-      console.log(activeTab);
+    let activeTab = await getActiveTabUrl();
+    console.log(question);
+    console.log(key);
+    console.log(activeTab);
   } catch (error) {
-      console.error('Error getting active tab URL:', error);
+    console.error('Error getting active tab URL:', error);
   }
 }
 
@@ -57,12 +57,12 @@ const submitQuestion = async () => {
 
 const getActiveTabUrl = () => {
   return new Promise((resolve, reject) => {
-      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-          if (chrome.runtime.lastError) {
-              return reject(new Error(chrome.runtime.lastError));
-          }
-          resolve(tabs[0].url);
-      });
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (chrome.runtime.lastError) {
+        return reject(new Error(chrome.runtime.lastError));
+      }
+      resolve(tabs[0].url);
+    });
   });
 }
 
@@ -77,9 +77,9 @@ const submitTimestamps = () => {
     console.log("sending message")
     chrome.tabs.sendMessage(
       activeTab,
-      { message: timestamp1, content: timestamp2 },
+      { message: timestamp1, content: timestamp2, url: tabs[0].url },
       (response) => {
-        if(response) {
+        if (response) {
           if (response.status === 'failed') {
             console.log('injection failed.');
           }
@@ -98,22 +98,22 @@ const submitTimestamps = () => {
 
 
 const changeKey = () => {
-document.getElementById('key_needed').style.display = 'block';
-document.getElementById('key_entered').style.display = 'none';
+  document.getElementById('key_needed').style.display = 'block';
+  document.getElementById('key_entered').style.display = 'none';
 };
 
 document.getElementById('save_key_button').addEventListener('click', saveKey);
 document
-.getElementById('change_key_button')
-.addEventListener('click', changeKey);
+  .getElementById('change_key_button')
+  .addEventListener('click', changeKey);
 
 document.getElementById('submit-question').addEventListener('click', submitQuestion);
 
 document.getElementById('submit-timestamps').addEventListener('click', submitTimestamps);
 
 checkForKey().then((response) => {
-    if (response) {
-      document.getElementById('key_needed').style.display = 'none';
-      document.getElementById('key_entered').style.display = 'block';
-    }
-  });
+  if (response) {
+    document.getElementById('key_needed').style.display = 'none';
+    document.getElementById('key_entered').style.display = 'block';
+  }
+});
