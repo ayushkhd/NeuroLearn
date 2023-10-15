@@ -67,9 +67,8 @@ const getActiveTabUrl = () => {
 }
 
 const submitTimestamps = () => {
-  const timestamp1 = document.getElementById('timestamp1').value;
-  const timestamp2 = document.getElementById('timestamp2').value;
-  console.log("found timestamps")
+  const contextInput = document.getElementById('context-input').value;
+  console.log("found context input")
 
 
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -77,7 +76,7 @@ const submitTimestamps = () => {
     console.log("sending message")
     chrome.tabs.sendMessage(
       activeTab,
-      { message: timestamp1, content: timestamp2, url: tabs[0].url },
+      { message: contextInput, url: tabs[0].url },
       (response) => {
         if (response) {
           if (response.status === 'failed') {
@@ -97,23 +96,23 @@ const submitTimestamps = () => {
 }
 
 
-const changeKey = () => {
-  document.getElementById('key_needed').style.display = 'block';
-  document.getElementById('key_entered').style.display = 'none';
-};
+// const changeKey = () => {
+//   document.getElementById('key_needed').style.display = 'block';
+//   document.getElementById('key_entered').style.display = 'none';
+// };
 
-document.getElementById('save_key_button').addEventListener('click', saveKey);
-document
-  .getElementById('change_key_button')
-  .addEventListener('click', changeKey);
+// document.getElementById('save_key_button').addEventListener('click', saveKey);
+// document
+//   .getElementById('change_key_button')
+//   .addEventListener('click', changeKey);
 
-document.getElementById('submit-question').addEventListener('click', submitQuestion);
+// document.getElementById('submit-question').addEventListener('click', submitQuestion);
 
-document.getElementById('submit-timestamps').addEventListener('click', submitTimestamps);
+document.getElementById('submit-context').addEventListener('click', submitTimestamps);
 
-checkForKey().then((response) => {
-  if (response) {
-    document.getElementById('key_needed').style.display = 'none';
-    document.getElementById('key_entered').style.display = 'block';
-  }
-});
+// checkForKey().then((response) => {
+//   if (response) {
+//     document.getElementById('key_needed').style.display = 'none';
+//     document.getElementById('key_entered').style.display = 'block';
+//   }
+// });
