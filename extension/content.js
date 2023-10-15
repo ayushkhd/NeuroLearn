@@ -161,6 +161,7 @@ function createCircularElement(number) {
 
 function createNeuroLearnElement(highlights) {
     const container = document.createElement('div');
+    container.id = 'neurolearn_container';
     container.style.background = 'linear-gradient(to bottom right, #2596be, #183d6e)';  // Gradient from #2596be to #183d6e at the low bottom right
     container.style.borderRadius = '10px';
     container.style.width = '28%';  // Adjust width as needed
@@ -255,6 +256,30 @@ function createNeuroLearnElement(highlights) {
         highlight.style.cursor = 'pointer';
 
         container.appendChild(highlight);
+
+        const description = document.createElement('div');
+        const fullText = item.reason_for_highlight;
+        const shortText = fullText.length > 100 ? fullText.substr(0, 97) + '...' : fullText;
+
+        description.textContent = shortText;
+        description.style.color = 'white';
+        description.style.marginBottom = '15px';
+        description.style.marginLeft = '20px';
+        description.style.marginRight = '10px';
+        description.style.fontSize = '12px';
+
+        const readMore = document.createElement('span');
+        readMore.textContent = ' Read More';
+        readMore.style.display = fullText.length > 100 ? 'inline' : 'none';
+        readMore.style.color = '#00d4ff';
+        readMore.style.cursor = 'pointer';
+        readMore.addEventListener('click', function() {
+            description.textContent = fullText;
+            readMore.style.display = 'none';
+        });
+
+        description.appendChild(readMore);
+        container.appendChild(description);
     }
     )
 
@@ -264,6 +289,7 @@ function createNeuroLearnElement(highlights) {
     flexDiv.style.alignItems = 'center';
 
     const aiCoach = document.createElement('input');
+    aiCoach.id = 'chatQueryInput';
     aiCoach.style.background = 'rgba(255, 255, 255, 0.5)';
     aiCoach.style.borderRadius = '20px';
     aiCoach.style.padding = '10px 20px';
@@ -283,10 +309,10 @@ function createNeuroLearnElement(highlights) {
 
 
     // Event listener to auto-expand the textarea
-    aiCoach.addEventListener('input', function () {
-        this.style.height = 'auto';
-        this.style.height = (this.scrollHeight) + 'px';
-    });
+    // aiCoach.addEventListener('input', function () {
+    //     this.style.height = 'auto';
+    //     this.style.height = (this.scrollHeight) + 'px';
+    // });
     const aiCoachButton = document.createElement('button');
     aiCoachButton.innerHTML = '&#x27A4;'; // Unicode for rightwards arrow
     aiCoachButton.style.background = '#00d4ff';
@@ -308,6 +334,9 @@ function createNeuroLearnElement(highlights) {
     });
     aiCoachButton.addEventListener('mouseout', function() {
         this.style.transform = 'scale(1.0)'; // Return to original size when not hovering
+    });
+    aiCoachButton.addEventListener('click', function() {
+        pingAIQuestion(); // Call the function 'pingAIQuestion' when the button is clicked
     });
 
     const newSection = document.createElement('div');
@@ -333,7 +362,7 @@ function createNeuroLearnElement(highlights) {
             circleElement = newCircleElement;
           }
         });
-
+    flexDiv.style.marginRight = '10px';
     flexDiv.appendChild(aiCoach);
     flexDiv.appendChild(aiCoachButton);
 
@@ -343,3 +372,59 @@ function createNeuroLearnElement(highlights) {
     return container;
 }
 
+
+pingAIQuestion = () => {
+    console.log("pinging AI")
+    // If it exists, remove an element of id = 'aiCoachResponse'
+    const oldResponse = document.getElementById('aiCoachResponse');
+    if (oldResponse) {
+        oldResponse.remove();
+    }
+    const input = document.getElementById('chatQueryInput');
+    const question = input.value;
+    let stuff = {
+        "query": question
+    };
+    fetch('https://166a-12-94-170-82.ngrok-free.app/chatQuery/', {
+            // fetch('http://localhost:8000/videoHighlight/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(stuff),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+
+                // Create a text element
+                const textElement = document.createElement('p');
+                textElement.style.marginLeft = '10px';
+                textElement.id = 'aiCoachResponse';
+                const container = document.getElementById('neurolearn_container');
+                textElement.style.fontFamily = 'Poppins, sans-serif'; // Make the font Poppins
+                textElement.style.fontSize = '16px';
+                textElement.style.color = 'rgba(255, 255, 255, 0.5)'; // Make the text more transparent
+
+                // Append the text element to the aiCoach section
+                container.appendChild(textElement);
+
+                // Type out the response iteratively
+                const chunkSize = 5; // Define the size of the chunk to write at a time
+                let i = 0;
+                const typing = setInterval(() => {
+                    if (i < data.response.length) {
+                        // Write a chunk of the response at a time
+                        textElement.textContent += data.response.substring(i, i + chunkSize);
+                        i += chunkSize;
+                    } else {
+                        clearInterval(typing);
+                    }
+                }, 100);
+
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+
+}
