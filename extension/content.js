@@ -151,6 +151,9 @@ chrome.runtime.onMessage.addListener(
         sendResponse({ status: 'success' });
     }
 );
+function skipToTime(time) {
+    document.getElementById("movie_player").seekTo(time, true);
+}
 
 function fetchElementAndParent() {
     // Fetch the specific div element with the given class and ID
@@ -227,12 +230,24 @@ function createNeuroLearnElement(highlights) {
         highlight.style.transition = 'transform 0.3s ease'; // Add transition for smooth hover effect
 
         // Add hover effect to elevate the highlight
-        highlight.addEventListener('mouseover', function () {
-            this.style.transform = 'translateY(-3px)';
-        });
-        highlight.addEventListener('mouseout', function () {
+        highlight.setAttribute("id", "highlightButton" + i);
+        container.appendChild(highlight);
+
+        const highlight_text = document.createElement("span");
+        highlight_text.textContent = highlights[i].highlight;
+
+        highlight.onmouseover = function (ev) {
+            container.appendChild(highlight_text);
+        };
+
+        highlight.onmouseout = function () {
             this.style.transform = 'translateY(0)';
-        });
+        };
+
+        // Add click event to navigate to the start_time of the highlight
+        // highlight.addEventListener('click', function () {
+        //     skipToTime(highlights[i].start_time);
+        // });
 
         const text = document.createElement('span');
         text.textContent = highlights[i].highlight; // Use the highlight text from the response
