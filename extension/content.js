@@ -369,9 +369,8 @@ function createNeuroLearnElement(highlights, url) {
 
         description.innerHTML = shortText; // Use innerHTML instead of textContent to parse HTML tags
         description.style.color = 'white';
-        description.style.marginBottom = '15px';
-        description.style.marginLeft = '20px';
-        description.style.marginRight = '10px';
+        description.style.marginLeft = '30px';
+        description.style.marginRight = '20px';
         description.style.fontSize = '12px';
 
         const readMore = document.createElement('span');
@@ -385,15 +384,20 @@ function createNeuroLearnElement(highlights, url) {
         });
 
         description.appendChild(readMore);
+        container.appendChild(description);
+
         const questionButton = document.createElement('button');
         questionButton.innerHTML = 'Quiz yourself';
         questionButton.style.background = '#00d4ff';
         questionButton.style.color = 'white';
-        questionButton.style.float = 'right';
         questionButton.style.paddingRight = '10px';
         questionButton.style.borderRadius = '20px';
-        questionButton.style.marginTop = '10px';
+        questionButton.style.marginTop = '5px';
         questionButton.style.border = '0px';
+        questionButton.style.marginBottom = '15px';
+        questionButton.style.marginLeft = '30px';
+        questionButton.style.transition = 'all 0.3s ease'; // Add transition for smooth animation
+
 
         questionButton.onmouseover = function () {
             this.style.transform = 'scale(1.1)'; // Grow by 10% on hover
@@ -409,9 +413,9 @@ function createNeuroLearnElement(highlights, url) {
             playAudio(item.questions[0])
 
         });
+
         container.appendChild(questionButton);
 
-        container.appendChild(description);
     }
     )
 
