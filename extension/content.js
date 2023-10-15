@@ -128,12 +128,13 @@ chrome.runtime.onMessage.addListener(
 
 
                     let result = fetchElementAndParent();
-if (result) {
-    console.log("Filtered element:", result.filteredElement);
-    console.log("Parent of filtered element:", result.parentElement);
-} else {
-    console.log("Element not found");
-}
+                    if (result) {
+                        console.log("Filtered element:", result.filteredElement);
+                        console.log("Parent of filtered element:", result.parentElement);
+                    } else {
+                        console.log("Element not found");
+
+                    }
 
 
 
@@ -196,6 +197,8 @@ function createNeuroLearnElement() {
     title.textContent = 'NeuroLearn';
     title.style.color = '#FFFFFF';  // Adjust title color as needed
     container.appendChild(title);
+
+    
 
     // Highlights
     for (let i = 0; i < 3; i++) {
