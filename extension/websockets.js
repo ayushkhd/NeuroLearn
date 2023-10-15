@@ -1,21 +1,34 @@
-const socket = new WebSocket('ws://localhost:8080');
+let socket = null;
 
-socket.addEventListener('open', function () {
-  console.log('WebSocket connection established');
-});
+chrome.runtime.onInstalled.addListener(() => {
+  socket = new WebSocket('ws://localhost:8080');
 
-socket.addEventListener('message', function (event) {
-  const data = JSON.parse(event.data);
-  if (data && data.focusProbability) {
-    // Send a message to the content script
-    window.postMessage({ type: "FROM_PAGE", focusProbability: data.focusProbability }, "*");
-  }
-});
+  socket.addEventListener('open', function () {
+    console.log('WebSocket connection established');
+  });
 
-socket.addEventListener('error', function (error) {
-  console.log('WebSocket error:', error);
-});
+  socket.addEventListener('message', function (event) {
+    const data = JSON.parse(event.data);
+    console.log("PLZ GOD", data)
+    if (data && data.focusProbability) {
+      // Store the data to send it later
+      const message = { focusProbability: data.focusProbability };
 
-socket.addEventListener('close', function () {
-  console.log('WebSocket connection closed');
+      // Listen for the tab update event
+      chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+        // When the tab is fully loaded, send the message
+        if (changeInfo.status === 'complete' && tab.active) {
+          chrome.tabs.sendMessage(tabId, message);
+        }
+      });
+    }
+  });
+
+  socket.addEventListener('error', function (error) {
+    console.log('WebSocket error:', error);
+  });
+
+  socket.addEventListener('close', function () {
+    console.log('WebSocket connection closed');
+  });
 });
