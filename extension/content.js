@@ -135,7 +135,7 @@ chrome.runtime.onMessage.addListener(
 
 
                     });
-                    let result = fetchElementAndParent();
+                    let result = fetchElementAndParent(data.highlights);
                         if (result) {
                             console.log("Filtered element:", result.filteredElement);
                             console.log("Parent of filtered element:", result.parentElement);
@@ -153,7 +153,7 @@ chrome.runtime.onMessage.addListener(
     }
 );
 
-function fetchElementAndParent() {
+function fetchElementAndParent(highlights) {
     // Fetch the specific div element with the given class and ID
     let filteredElement = document.querySelector('div.style-scope.ytd-watch-flexy#secondary');
     console.log("inside function")
@@ -166,7 +166,7 @@ function fetchElementAndParent() {
         console.log("boutta remove")
         filteredElement.remove();
 
-        const neuroLearnElement = createNeuroLearnElement();
+        const neuroLearnElement = createNeuroLearnElement(highlights);
         parentElement.appendChild(neuroLearnElement);
 
         return {
@@ -182,7 +182,7 @@ function fetchElementAndParent() {
 console.log("calling func")
 
 
-function createNeuroLearnElement() {
+function createNeuroLearnElement(highlights) {
     const container = document.createElement('div');
     container.style.background = 'linear-gradient(#8B5DF8, white)';  // Gradient from purple to white
     container.style.padding = '10px';
@@ -221,7 +221,7 @@ function createNeuroLearnElement() {
 
 
     // Highlights
-    for (let i = 0; i < 3; i++) {
+    highlights.forEach((item, index) => {
         const highlight = document.createElement('div');
 
         // Set the translucent bubble styles for each highlight
@@ -234,13 +234,13 @@ function createNeuroLearnElement() {
         highlight.style.alignItems = 'center';
 
         const text = document.createElement('span');
-        text.textContent = `Highlight 1 - Get the space`;
+        text.textContent = `Highlight ${index + 1}: ${item.start_time} - ${item.end_time}`;
         text.style.fontSize = '18px';
         highlight.appendChild(text);
 
         const percentage = document.createElement('span');
-        percentage.textContent = i === 0 ? '75%' : '20%';
-        percentage.style.background = i === 0 ? 'limegreen' : 'red';
+        percentage.textContent = index === 0 ? '75%' : '20%';
+        percentage.style.background = index === 0 ? 'limegreen' : 'red';
         percentage.style.borderRadius = '50%';
         percentage.style.padding = '5px 5px';
         percentage.style.color = 'white';
@@ -249,6 +249,7 @@ function createNeuroLearnElement() {
 
         container.appendChild(highlight);
     }
+    )
 
     const flexDiv = document.createElement('div');
     flexDiv.style.display = 'flex';
