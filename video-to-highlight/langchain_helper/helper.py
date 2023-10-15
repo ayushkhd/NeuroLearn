@@ -1,6 +1,7 @@
 from langchain.document_loaders import YoutubeLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.llms import OpenAI
+from langchain.chat_models import ChatOpenAI
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
@@ -31,20 +32,22 @@ def get_response_from_query(query, k=4):
     docs = db.similarity_search(query, k=k)
     docs_page_content = " ".join([d.page_content for d in docs])
 
-    llm = OpenAI(model="text-davinci-003", openai_api_key=openai_api_key)
+    llm = ChatOpenAI(model="gpt-3.5-turbo", openai_api_key=openai_api_key)
 
     prompt = PromptTemplate(
         input_variables=["question", "docs"],
         template="""
 You are a helpful assistant that that can answer questions about youtube videos 
-        based on the video's transcript.
+        based on the video's transcript and/or by using your general knowledge. Fallback to general knowledge only
+        when you the video transcript has not even slightly relevant context. But, mention that "the video doesn't specify anything relevant to
+        the question" in the video transcript in cases where you fallback as a prefix.
         
         Answer the following question: {question}
-        By searching the following video transcript: {docs}
-        
-        Only use the factual information from the transcript to answer the question.
-        
-        If you feel like you don't have enough information to answer the question, say "I don't know".
+        By searching the following video transcript: {docs} and/or using your general knowledge. Fallback to general knowledge only
+        when you the video transcript has not even slightly relevant context. But, mention that "the video doesn't specify anything relevant to
+        the question" in the video transcript in cases where you fallback as a prefix.
+                
+        Then, If you feel like you don't have enough information to answer the question, say "I don't know".
         
         Your answers should be verbose and detailed.
         """,
