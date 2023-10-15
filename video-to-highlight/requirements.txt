@@ -3,6 +3,8 @@ uvicorn
 typing-extensions==4.6.1
 elevenlabs
 tiktoken
+fastapi-cors
+
 
 ### Following are the dependencies of Langchain
 aiohttp==3.8.6
