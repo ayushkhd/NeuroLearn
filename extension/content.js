@@ -161,6 +161,7 @@ function createCircularElement(number) {
 
 function createNeuroLearnElement(highlights) {
     const container = document.createElement('div');
+    container.id = 'neurolearn_container';
     container.style.background = 'linear-gradient(to bottom right, #2596be, #183d6e)';  // Gradient from #2596be to #183d6e at the low bottom right
     container.style.borderRadius = '10px';
     container.style.width = '28%';  // Adjust width as needed
@@ -415,6 +416,11 @@ function createNeuroLearnElement(highlights) {
 
 pingAIQuestion = () => {
     console.log("pinging AI")
+    // If it exists, remove an element of id = 'aiCoachResponse'
+    const oldResponse = document.getElementById('aiCoachResponse');
+    if (oldResponse) {
+        oldResponse.remove();
+    }
     const input = document.getElementById('chatQueryInput');
     const question = input.value;
     let stuff = {
@@ -432,10 +438,34 @@ pingAIQuestion = () => {
             .then(data => {
                 console.log(data);
 
+                // Create a text element
+                const textElement = document.createElement('p');
+                textElement.style.marginLeft = '10px';
+                textElement.id = 'aiCoachResponse';
+                const container = document.getElementById('neurolearn_container');
+                textElement.style.fontFamily = 'Poppins, sans-serif'; // Make the font Poppins
+                textElement.style.fontSize = '16px';
+                textElement.style.color = 'rgba(255, 255, 255, 0.5)'; // Make the text more transparent
 
+                // Append the text element to the aiCoach section
+                container.appendChild(textElement);
+
+                // Type out the response iteratively
+                const chunkSize = 5; // Define the size of the chunk to write at a time
+                let i = 0;
+                const typing = setInterval(() => {
+                    if (i < data.response.length) {
+                        // Write a chunk of the response at a time
+                        textElement.textContent += data.response.substring(i, i + chunkSize);
+                        i += chunkSize;
+                    } else {
+                        clearInterval(typing);
+                    }
+                }, 100);
 
             })
             .catch((error) => {
                 console.error('Error:', error);
             });
+
 }
