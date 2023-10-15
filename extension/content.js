@@ -80,10 +80,66 @@ chrome.runtime.onMessage.addListener(
             body: JSON.stringify(videoHighlight),
         })
         .then(response => response.json())
-        .then(data => console.log(data))
+        .then(data => {
+            console.log(data);
+
+            // Check if "highlights" array is present in the data
+            if(data.highlights && Array.isArray(data.highlights)) {
+                data.highlights.forEach((highlight, index) => {
+                    console.log(`Highlight ${index + 1}:`);
+                    console.log(`Start Time: ${highlight.start_time}`);
+                    console.log(`End Time: ${highlight.end_time}`);
+
+                    const timeDuration = document.getElementsByClassName('ytp-time-duration')[0].innerHTML;
+
+                    const [minutes, seconds] = timeDuration.split(":").map(Number);
+                    const totalSeconds = minutes * 60 + seconds;
+
+                    const progressBar = document.getElementsByClassName('ytp-progress-bar-container')[0];
+
+
+                    const totalDuration = totalSeconds; // Example value in seconds
+
+                    const timestamp1 = highlight.start_time;
+                    const timestamp2 = highlight.end_time;
+
+                    // Calculate position and width of the highlight based on timestamps
+                    const highlightPosition = (timestamp1 / totalDuration) * progressBar.offsetWidth;
+                    const highlightWidth = ((timestamp2 - timestamp1) / totalDuration) * progressBar.offsetWidth;
+
+                    // Create and style the highlight element
+                    const greenHighlight = document.createElement('div');
+                    greenHighlight.style.position = 'absolute';
+                    greenHighlight.style.backgroundColor = 'green';
+                    greenHighlight.style.height = '100%';
+                    greenHighlight.style.width = `${highlightWidth}px`;
+                    greenHighlight.style.left = `${highlightPosition}px`;
+                    greenHighlight.style.zIndex = '1000';
+                    greenHighlight.style.touchAction = 'none';
+                    greenHighlight.role = 'slider';
+                    greenHighlight.tabIndex = '0';  
+                    greenHighlight.draggable = true; // Prefer boolean values when applicable
+
+                    console.log("appending highlight")
+                    // Append the highlight element to the progress bar
+                    progressBar.appendChild(greenHighlight);
+
+
+
+
+
+
+
+
+
+
+                });
+            }
+        })
         .catch((error) => {
             console.error('Error:', error);
-});
+        });
+
 
         sendResponse({ status: 'success' });
     }
