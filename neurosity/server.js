@@ -1,19 +1,32 @@
 const WebSocket = require('ws');
+const EventEmitter = require('events');
 
-const wss = new WebSocket.Server({ port: 8080 });
+class FocusEmitter extends EventEmitter {}
 
-wss.on('connection', ws => {
-  console.log('Client connected');
-});
+const focusEmitter = new FocusEmitter();
 
-wss.on('connection', ws => {
+const wss = new WebSocket.Server({ port: 8060 });
+
+wss.on('connection', (ws) => {
     console.log('Client connected');
     
-    // Send a test message to the client
-    ws.send(JSON.stringify({ focusProbability: Math.random() }));
+    // This function will be executed every time there's a new focus score
+    const sendFocusScore = (focusScore) => {
+        ws.send(JSON.stringify({ focusProbability: focusScore }));
+    };
+
+    // Attach the event listener
+    focusEmitter.on('newFocusScore', sendFocusScore);
     
-    ws.on('message', message => {
-      const data = JSON.parse(message);
-      console.log('Received data:', data);
+    // When the client disconnects, remove the listener to avoid potential memory leaks
+    ws.on('close', () => {
+        focusEmitter.removeListener('newFocusScore', sendFocusScore);
     });
-  });
+
+    // Initial test message (can be removed if you no longer need it)
+    ws.send(JSON.stringify({ focusProbability: Math.random() }));
+});
+
+console.log('WebSocket server started on port 8060');
+
+module.exports = focusEmitter;

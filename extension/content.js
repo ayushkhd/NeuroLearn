@@ -396,30 +396,43 @@ function createNeuroLearnElement(highlights) {
         pingAIQuestion(); // Call the function 'pingAIQuestion' when the button is clicked
     });
 
-    const newSection = document.createElement('div');
-    newSection.style.display = 'flex';
-    newSection.style.justifyContent = 'center';
-    newSection.style.alignItems = 'center';
-    newSection.style.marginTop = '20px'; // Add some margin at the top for spacing
-    newSection.style.position = 'fixed';
-    newSection.style.bottom = '0';
-    newSection.style.right = '0'; // Position the new section at the right of the screen
-    newSection.style.left = 'auto'; // Override any existing left positioning
+// Assuming 'createCircularElement' is defined somewhere in your content.js
+// or in another JS file that gets loaded before content.js.
 
-    let circleElement = createCircularElement(5); // Create the circular element with number 5
+// Create a new section for the circular element
+const newSection = document.createElement('div');
+newSection.style.display = 'flex';
+newSection.style.justifyContent = 'center';
+newSection.style.alignItems = 'center';
+newSection.style.marginTop = '20px';
+newSection.style.position = 'fixed';
+newSection.style.bottom = '0';
+newSection.style.right = '0';
+newSection.style.left = 'auto';
 
-    chrome.runtime.onMessage.addListener(
-        function (request, sender, sendResponse) {
-            if (request.focusProbability) {
-                console.log("Content script received focus probability: " + request.focusProbability);
-                // Update your circular element with the received data
-                const newCircleElement = createCircularElement(Math.round(request.focusProbability * 100));
-                // Replace the old circular element with the new one in your DOM
-                newSection.replaceChild(newCircleElement, circleElement);
-                circleElement = newCircleElement;
-            }
-        });
-    flexDiv.style.marginRight = '10px';
+// Create and append the initial circular element
+let circleElement = createCircularElement(5);
+newSection.appendChild(circleElement);
+
+// Append the new section to the body, ensuring it's visible
+document.body.appendChild(newSection);
+
+// Listen for messages from the background script
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+    if (request && request.focusProbability !== undefined) {
+        console.log("Content script received focus probability:", request.focusProbability);
+        
+        // Create a new circular element based on the received focus probability
+        const newCircleElement = createCircularElement(Math.round(request.focusProbability * 100));
+
+        // Replace the old circle with the new one
+        newSection.replaceChild(newCircleElement, circleElement);
+        
+        // Update our reference to the current circle element
+        circleElement = newCircleElement;
+    }
+});
+
     flexDiv.appendChild(aiCoach);
     flexDiv.appendChild(aiCoachButton);
 
