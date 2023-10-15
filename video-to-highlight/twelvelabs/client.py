@@ -1,8 +1,28 @@
 import requests
 import os
 from dotenv import load_dotenv
+from pydantic import BaseModel, Field
+from typing import List
 
 load_dotenv()
+
+
+class Highlight(BaseModel):
+    start: int
+    end: int
+    highlight: str
+    highlight_summary: str
+
+
+class HighlightVideoResponse(BaseModel):
+    id: str
+    highlights: List[Highlight]
+
+
+class HighlightVideoBody(BaseModel):
+    video_id: str
+    prompt: str
+    type: str = "highlight"
 
 
 class Client:
@@ -20,10 +40,8 @@ class Client:
         # you can get the video ID from video_id
         return response.json()
 
-    def highlight_video(self, video_id: str, prompt: str, type: str = "highlight"):
+    def highlight_video(self, body: HighlightVideoBody) -> HighlightVideoResponse:
         url = f"{self.api_url}/summarize"
-        data = {"video_id": video_id, "type": type, "prompt": prompt}
+        data = body.dict()
         response = requests.post(url, headers=self.headers, json=data)
-        return response.json()
-
-
+        return HighlightVideoResponse(**response.json())
