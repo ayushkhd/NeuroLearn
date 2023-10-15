@@ -215,8 +215,7 @@ function createNeuroLearnElement(highlights) {
     flexDiv.style.justifyContent = 'space-between';
     flexDiv.style.alignItems = 'center';
 
-    const aiCoach = document.createElement('input');
-    aiCoach.type = 'text';
+    const aiCoach = document.createElement('textarea');
     aiCoach.style.background = 'rgba(255, 255, 255, 0.8)';
     aiCoach.style.borderRadius = '20px';
     aiCoach.style.padding = '10px 20px';
@@ -224,7 +223,14 @@ function createNeuroLearnElement(highlights) {
     aiCoach.placeholder = 'Ask your AI coach...';
     aiCoach.style.fontSize = '20px';
     aiCoach.style.textAlign = 'center';
+    aiCoach.style.overflow = 'hidden';
+    aiCoach.style.resize = 'none';
 
+    // Event listener to auto-expand the textarea
+    aiCoach.addEventListener('input', function () {
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight) + 'px';
+    });
     const aiCoachButton = document.createElement('button');
     aiCoachButton.innerHTML = '&#x27A4;'; // Unicode for rightwards arrow
     aiCoachButton.style.background = '#8B5DF8';
