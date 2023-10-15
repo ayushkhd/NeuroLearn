@@ -1,4 +1,3 @@
-from .langchain_helper.helper import get_response_from_query
 import openai
 import os
 from dotenv import load_dotenv
@@ -6,6 +5,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
+import sys
+sys.path.append('.')
+from .langchain_helper.helper import get_response_from_query
 from .twelvelabs.client import *
 
 load_dotenv()
@@ -104,6 +106,7 @@ def highlight_video(video: VideoHighlight):
         return response
     else:
         client = Client()
+        video_id = "652b217543e8c47e4eb48112"
         body = HighlightVideoBody(**{
             "video_id": video.videoToHighlight,
             "type": "highlight",
@@ -112,7 +115,7 @@ def highlight_video(video: VideoHighlight):
         response: HighlightVideoResponse = client.highlight_video(body)
         highlights = []
         for i, h in enumerate(response.highlights):
-            explained_reason = client.explain_highlights([h], body.prompt)[0].highlight_summary
+            explained_reason = client.explain(h.highlight, body.prompt)
             question = make_chat_completion_request(
                 f"""Based on the given summary {h.highlight}, can you please give me a question? Only return the question. Question:"""
             )

@@ -1,39 +1,34 @@
 const { Neurosity } = require("@neurosity/sdk");
 require("dotenv").config();
+const focusEmitter = require('./server.js');
 
-const deviceId = process.env.NEUROSITY_DEVICE_ID || ""
+const deviceId = process.env.NEUROSITY_DEVICE_ID || "";
 const email = process.env.NEUROSITY_EMAIL || "";
 const password = process.env.NEUROSITY_PASSWORD || "";
 
-const neurosity = new Neurosity({
-    deviceId
-  });
+const neurosity = new Neurosity({ deviceId });
+
+let focusSubscription = null;
 
 const main = async () => {
-await neurosity
-    .login({
-    email,
-    password
-    })
-    .catch((error) => {
-    console.log(error);
-    throw new Error(error);
-    });
-console.log("Logged in");
+    try {
+        await neurosity.login({
+            email,
+            password
+        });
+        console.log("Logged in");
 
-const WebSocket = require('ws');
+        // Subscribe to focus data from Neurosity
+        focusSubscription = neurosity.focus().subscribe((focus) => {
+            if (focus.probability > 0.1) {
+                console.log(focus.probability);
+                focusEmitter.emit('newFocusScore', focus.probability); // Emit the focus score to the server
+            }
+        });
 
-const ws = new WebSocket('ws://localhost:8080');
-
-ws.on('open', function open() {
-  neurosity.focus().subscribe((focus) => {
-    if (focus.probability > 0.1) {
-      console.log(focus.probability)
-      ws.send(JSON.stringify({ focusProbability: focus.probability }));
+    } catch (error) {
+        console.error("Error during login:", error);
     }
-  });
-});
 };
-
 
 main();
