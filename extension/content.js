@@ -207,7 +207,6 @@ function createNeuroLearnElement(highlights) {
         highlight.style.background = 'rgba(255, 255, 255, 0.8)'; // More opaque than before
         highlight.style.borderRadius = '20px'; // More rounded corners
         highlight.style.padding = '10px 20px';
-        highlight.style.marginBottom = '15px';
         highlight.style.display = 'flex';
         highlight.style.justifyContent = 'space-between';
         highlight.style.alignItems = 'center';
@@ -236,6 +235,14 @@ function createNeuroLearnElement(highlights) {
         highlight.style.cursor = 'pointer';
 
         container.appendChild(highlight);
+
+        const description = document.createElement('div');
+        description.textContent = item.reason_for_highlight;
+        description.style.color = 'white';
+        description.style.marginBottom = '15px';
+
+
+        container.appendChild(description);
     }
     )
 
