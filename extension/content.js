@@ -240,6 +240,9 @@ function createNeuroLearnElement(highlights) {
         description.textContent = item.reason_for_highlight;
         description.style.color = 'white';
         description.style.marginBottom = '15px';
+        description.style.marginLeft = '10px';
+        description.style.marginRight = '10px';
+        description.style.fontSize = '12px';
 
 
         container.appendChild(description);
