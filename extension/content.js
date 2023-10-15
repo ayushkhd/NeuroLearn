@@ -189,6 +189,7 @@ function createCircularElement(number) {
 
 function createNeuroLearnElement(highlights) {
     const container = document.createElement('div');
+    container.id = 'neurolearn_container';
     container.style.background = 'linear-gradient(to bottom right, #2596be, #183d6e)';  // Gradient from #2596be to #183d6e at the low bottom right
     container.style.borderRadius = '10px';
     container.style.width = '28%';  // Adjust width as needed
@@ -238,6 +239,7 @@ function createNeuroLearnElement(highlights) {
         highlight.style.background = 'rgba(255, 255, 255, 0.5)'; // More transparent than before
         highlight.style.borderRadius = '20px'; // More rounded corners
         highlight.style.padding = '10px 20px';
+        highlight.style.marginBottom = '15px';
         highlight.style.display = 'flex';
         highlight.style.justifyContent = 'space-between';
         highlight.style.alignItems = 'center';
@@ -298,7 +300,7 @@ function createNeuroLearnElement(highlights) {
         const readMore = document.createElement('span');
         readMore.textContent = ' Read More';
         readMore.style.display = fullText.length > 100 ? 'inline' : 'none';
-        readMore.style.color = 'blue';
+        readMore.style.color = '#00d4ff';
         readMore.style.cursor = 'pointer';
         readMore.addEventListener('click', function () {
             description.textContent = fullText;
@@ -342,8 +344,10 @@ function createNeuroLearnElement(highlights) {
     flexDiv.style.alignItems = 'center';
 
     const aiCoach = document.createElement('input');
+    aiCoach.id = 'chatQueryInput';
     aiCoach.style.background = 'rgba(255, 255, 255, 0.5)';
     aiCoach.style.borderRadius = '20px';
+    aiCoach.style.padding = '10px 20px';
     aiCoach.style.marginTop = '15px';
     aiCoach.placeholder = 'Ask your AI coach...';
     aiCoach.style.fontSize = '16px';
@@ -360,17 +364,17 @@ function createNeuroLearnElement(highlights) {
 
 
     // Event listener to auto-expand the textarea
-    aiCoach.addEventListener('input', function () {
-        this.style.height = 'auto';
-        this.style.height = (this.scrollHeight) + 'px';
-    });
+    // aiCoach.addEventListener('input', function () {
+    //     this.style.height = 'auto';
+    //     this.style.height = (this.scrollHeight) + 'px';
+    // });
     const aiCoachButton = document.createElement('button');
     aiCoachButton.innerHTML = '&#x27A4;'; // Unicode for rightwards arrow
     aiCoachButton.style.background = '#00d4ff';
     aiCoachButton.style.color = 'white';
     aiCoachButton.style.borderRadius = '20px';
-    aiCoachButton.style.marginTop = '15px';
     aiCoachButton.style.padding = '10px 20px';
+    aiCoachButton.style.marginTop = '15px';
     aiCoachButton.style.marginLeft = '10px'; // Added padding between text area and the button
     aiCoachButton.style.fontSize = '20px';
     aiCoachButton.style.border = 'none';
@@ -386,6 +390,9 @@ function createNeuroLearnElement(highlights) {
     aiCoachButton.addEventListener('mouseout', function () {
         this.style.transform = 'scale(1.0)'; // Return to original size when not hovering
     });
+    aiCoachButton.addEventListener('click', function () {
+        pingAIQuestion(); // Call the function 'pingAIQuestion' when the button is clicked
+    });
 
     const newSection = document.createElement('div');
     newSection.style.display = 'flex';
@@ -397,50 +404,7 @@ function createNeuroLearnElement(highlights) {
     newSection.style.right = '0'; // Position the new section at the right of the screen
     newSection.style.left = 'auto'; // Override any existing left positioning
 
-    // const socket = new WebSocket('ws://localhost:8080');
-    // let circleElement = createCircularElement(5); // Create the circular element with number 5
-    // newSection.appendChild(circleElement); // Append the circular element to the new section
-
-    // socket.addEventListener('message', function (event) {
-    //     const data = JSON.parse(event.data);
-    //     if (data && data.focusProbability) {
-    //         // Update your circular element with the received data
-    //         const newCircleElement = createCircularElement(Math.round(data.focusProbability * 100));
-    //         console.log(Math.round(data.focusProbability * 100))
-    //         // Replace the old circular element with the new one in your DOM
-    //         newSection.replaceChild(newCircleElement, circleElement);
-    //         circleElement = newCircleElement;
-    //     }
-    // });
-
-    // const socket = new WebSocket('ws://localhost:8080');
     let circleElement = createCircularElement(5); // Create the circular element with number 5
-    newSection.appendChild(circleElement); // Append the circular element to the new section
-
-    // socket.addEventListener('open', function () {
-    //     console.log('WebSocket connection established');
-    // });
-
-    // socket.addEventListener('message', function (event) {
-    //     const data = JSON.parse(event.data);
-    //     console.log('Received data:', data);
-    //     if (data && data.focusProbability) {
-    //         // console.log('Received data:', data);
-    //         // Update your circular element with the received data
-    //         const newCircleElement = createCircularElement(Math.round(data.focusProbability * 100));
-    //         // Replace the old circular element with the new one in your DOM
-    //         newSection.replaceChild(newCircleElement, circleElement);
-    //         circleElement = newCircleElement;
-    //     }
-    // });
-
-    // socket.addEventListener('error', function (error) {
-    //     console.log('WebSocket error:', error);
-    // });
-
-    // socket.addEventListener('close', function () {
-    //     console.log('WebSocket connection closed');
-    // });
 
     chrome.runtime.onMessage.addListener(
         function (request, sender, sendResponse) {
@@ -453,7 +417,7 @@ function createNeuroLearnElement(highlights) {
                 circleElement = newCircleElement;
             }
         });
-
+    flexDiv.style.marginRight = '10px';
     flexDiv.appendChild(aiCoach);
     flexDiv.appendChild(aiCoachButton);
 
@@ -463,3 +427,59 @@ function createNeuroLearnElement(highlights) {
     return container;
 }
 
+
+pingAIQuestion = () => {
+    console.log("pinging AI")
+    // If it exists, remove an element of id = 'aiCoachResponse'
+    const oldResponse = document.getElementById('aiCoachResponse');
+    if (oldResponse) {
+        oldResponse.remove();
+    }
+    const input = document.getElementById('chatQueryInput');
+    const question = input.value;
+    let stuff = {
+        "query": question
+    };
+    fetch('https://166a-12-94-170-82.ngrok-free.app/chatQuery/', {
+        // fetch('http://localhost:8000/videoHighlight/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(stuff),
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+
+            // Create a text element
+            const textElement = document.createElement('p');
+            textElement.style.marginLeft = '10px';
+            textElement.id = 'aiCoachResponse';
+            const container = document.getElementById('neurolearn_container');
+            textElement.style.fontFamily = 'Poppins, sans-serif'; // Make the font Poppins
+            textElement.style.fontSize = '16px';
+            textElement.style.color = 'rgba(255, 255, 255, 0.5)'; // Make the text more transparent
+
+            // Append the text element to the aiCoach section
+            container.appendChild(textElement);
+
+            // Type out the response iteratively
+            const chunkSize = 5; // Define the size of the chunk to write at a time
+            let i = 0;
+            const typing = setInterval(() => {
+                if (i < data.response.length) {
+                    // Write a chunk of the response at a time
+                    textElement.textContent += data.response.substring(i, i + chunkSize);
+                    i += chunkSize;
+                } else {
+                    clearInterval(typing);
+                }
+            }, 100);
+
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+
+}
