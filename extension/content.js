@@ -72,8 +72,8 @@ chrome.runtime.onMessage.addListener(
         };
 
 
-        fetch('https://30a0-12-94-170-82.ngrok-free.app/videoHighlight/', {
-            // fetch('http://localhost:8000/videoHighlight/', {
+        // fetch('https://30a0-12-94-170-82.ngrok-free.app/videoHighlight/', {
+        fetch('http://localhost:8000/videoHighlight/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -181,7 +181,7 @@ function fetchElementAndParent() {
 console.log("calling func")
 
 
-function createNeuroLearnElement() {
+function createNeuroLearnElement(highlights) {
     const container = document.createElement('div');
     container.style.background = 'linear-gradient(#8B5DF8, white)';  // Gradient from purple to white
     container.style.padding = '10px';
@@ -215,7 +215,7 @@ function createNeuroLearnElement() {
 
 
     // Highlights
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < highlights.length; i++) {
         const highlight = document.createElement('div');
 
         // Set the translucent bubble styles for each highlight
@@ -228,12 +228,12 @@ function createNeuroLearnElement() {
         highlight.style.alignItems = 'center';
 
         const text = document.createElement('span');
-        text.textContent = `Highlight 1 - Get the space`;
+        text.textContent = highlights[i].highlight; // Use the highlight text from the response
         text.style.fontSize = '18px';
         highlight.appendChild(text);
 
         const percentage = document.createElement('span');
-        percentage.textContent = i === 0 ? '75%' : '20%';
+        percentage.textContent = i === 0 ? '75%' : '20%'; // Replace this with actual data if available
         percentage.style.background = i === 0 ? 'limegreen' : 'red';
         percentage.style.borderRadius = '50%';
         percentage.style.padding = '5px 15px';
