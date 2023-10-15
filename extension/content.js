@@ -241,7 +241,7 @@ function createNeuroLearnElement() {
         percentage.textContent = i === 0 ? '75%' : '20%';
         percentage.style.background = i === 0 ? 'limegreen' : 'red';
         percentage.style.borderRadius = '50%';
-        percentage.style.padding = '5px 15px';
+        percentage.style.padding = '5px 5px';
         percentage.style.color = 'white';
         percentage.style.fontSize = '18px';
         highlight.appendChild(percentage);
