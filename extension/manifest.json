@@ -20,17 +20,17 @@
     "contextMenus",
     "tabs",
     "storage",
-    "activeTab",
-    "http://localhost:8080/"
+    "activeTab"
   ],
-    "content_scripts": [
+  "content_scripts": [
     {
       "matches": [
         "http://*/*",
         "https://*/*"
       ],
       "js": [
-        "content.js", "websockets.js"
+        "content.js",
+        "websockets.js"
       ],
       "css": [
         "index.css"
