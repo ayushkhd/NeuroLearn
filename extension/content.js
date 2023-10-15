@@ -210,13 +210,18 @@ function createNeuroLearnElement(highlights) {
         highlight.style.display = 'flex';
         highlight.style.justifyContent = 'space-between';
         highlight.style.alignItems = 'center';
+        highlight.style.boxShadow = '0px 3px 6px rgba(0, 0, 0, 0.16)'; // Add drop shadow
+        highlight.style.marginLeft = '10px';
+        highlight.style.marginRight = '10px';
 
         start_time = secondsToTime(item.start_time);
         end_time = secondsToTime(item.end_time);
 
         const text = document.createElement('span');
         text.textContent = `Highlight ${index + 1}: ${start_time} - ${end_time}`;
-        text.style.fontSize = '18px';
+        text.style.fontSize = '16px';
+        text.style.fontFamily = 'Poppins, sans-serif'; // Make the font Poppins
+        text.style.fontWeight = '600'; // Make the font semibold
         highlight.appendChild(text);
 
         const percentage = document.createElement('span');
@@ -237,33 +242,45 @@ function createNeuroLearnElement(highlights) {
         container.appendChild(highlight);
 
         const description = document.createElement('div');
-        description.textContent = item.reason_for_highlight;
+        const fullText = item.reason_for_highlight;
+        const shortText = fullText.length > 100 ? fullText.substr(0, 97) + '...' : fullText;
+
+        description.textContent = shortText;
         description.style.color = 'white';
         description.style.marginBottom = '15px';
-        description.style.marginLeft = '10px';
+        description.style.marginLeft = '20px';
         description.style.marginRight = '10px';
         description.style.fontSize = '12px';
 
+        const readMore = document.createElement('span');
+        readMore.textContent = ' Read More';
+        readMore.style.display = fullText.length > 100 ? 'inline' : 'none';
+        readMore.style.color = 'blue';
+        readMore.style.cursor = 'pointer';
+        readMore.addEventListener('click', function() {
+            description.textContent = fullText;
+            readMore.style.display = 'none';
+        });
 
+        description.appendChild(readMore);
         container.appendChild(description);
     }
     )
 
     const flexDiv = document.createElement('div');
     flexDiv.style.display = 'flex';
-    flexDiv.style.justifyContent = 'space-between';
+    flexDiv.style.justifyContent = 'space-evenly';
     flexDiv.style.alignItems = 'center';
 
     const aiCoach = document.createElement('textarea');
     aiCoach.style.background = 'rgba(255, 255, 255, 0.8)';
     aiCoach.style.borderRadius = '20px';
-    aiCoach.style.padding = '10px 20px';
     aiCoach.style.marginTop = '15px';
     aiCoach.placeholder = 'Ask your AI coach...';
-    aiCoach.style.fontSize = '20px';
-    aiCoach.style.textAlign = 'center';
-    aiCoach.style.overflow = 'hidden';
-    aiCoach.style.resize = 'none';
+    aiCoach.style.fontSize = '16px';
+    aiCoach.style.fontFamily = 'Poppins, sans-serif'; // Make the font Poppins
+    aiCoach.style.marginLeft = '10px';
+
 
     // Event listener to auto-expand the textarea
     aiCoach.addEventListener('input', function () {
@@ -276,6 +293,7 @@ function createNeuroLearnElement(highlights) {
     aiCoachButton.style.color = 'white';
     aiCoachButton.style.borderRadius = '20px';
     aiCoachButton.style.marginTop = '15px';
+    aiCoachButton.style.padding = '10px 20px';
     aiCoachButton.style.marginLeft = '10px'; // Added padding between text area and the button
     aiCoachButton.style.fontSize = '20px';
     aiCoachButton.style.border = 'none';
