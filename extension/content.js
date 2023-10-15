@@ -1,58 +1,5 @@
 console.log("Content script has loaded and is running!");
 
-// chrome.runtime.onMessage.addListener(
-//     (request, sender, sendResponse) => {
-
-//         console.log("received message")
-
-//         // const timestamp1 = request.message;
-//         // const timestamp2 = request.content;
-
-//         const timeDuration = document.getElementsByClassName('ytp-time-duration')[0].innerHTML;
-
-//         const [minutes, seconds] = timeDuration.split(":").map(Number);
-//         const totalSeconds = minutes * 60 + seconds;
-
-
-//         // Assuming progressBar is the element representing the progress bar and its width can be used to calculate the position and size of the highlight
-//         const progressBar = document.getElementsByClassName('ytp-progress-bar-container')[0];
-
-//         // Assuming timestamp1 and timestamp2 are in seconds and represent a portion of the video's total duration
-//         const timestamp1 = timeToSeconds(request.message); 
-//     const timestamp2 = timeToSeconds(request.content); 
-
-//         // Assuming totalDuration represents the total duration of the video in seconds
-//         const totalDuration = totalSeconds; // Example value in seconds
-
-//         // Calculate position and width of the highlight based on timestamps
-//         const highlightPosition = (timestamp1 / totalDuration) * progressBar.offsetWidth;
-//         const highlightWidth = ((timestamp2 - timestamp1) / totalDuration) * progressBar.offsetWidth;
-
-//         // Create and style the highlight element
-//         const highlight = document.createElement('div');
-//         highlight.style.position = 'absolute';
-//         highlight.style.backgroundColor = 'green';
-//         highlight.style.height = '100%';
-//         highlight.style.width = `${highlightWidth}px`;
-//         highlight.style.left = `${highlightPosition}px`;
-//         highlight.style.zIndex = '1000';
-//         highlight.style.touchAction = 'none';
-//         highlight.role = 'slider';
-//         highlight.tabIndex = '0';  
-//         highlight.draggable = true; // Prefer boolean values when applicable
-
-//         console.log("appending highlight")
-//         // Append the highlight element to the progress bar
-//         progressBar.appendChild(highlight);
-
-
-
-
-//         console.log("returning true")
-//         sendResponse({ status: 'success' });
-//     }
-//   );
-
 function timeToSeconds(timeString) {
     const [minutes, seconds] = timeString.split(":").map(Number);
     return minutes * 60 + seconds;
@@ -143,7 +90,7 @@ chrome.runtime.onMessage.addListener(
 
 
 
-                        
+
 
 
 
@@ -151,12 +98,12 @@ chrome.runtime.onMessage.addListener(
 
                     });
                     let result = fetchElementAndParent(data.highlights);
-                        if (result) {
-                            console.log("Filtered element:", result.filteredElement);
-                            console.log("Parent of filtered element:", result.parentElement);
-                        } else {
-                            console.log("Element not found");
-                        }
+                    if (result) {
+                        console.log("Filtered element:", result.filteredElement);
+                        console.log("Parent of filtered element:", result.parentElement);
+                    } else {
+                        console.log("Element not found");
+                    }
                 }
             })
             .catch((error) => {
@@ -196,10 +143,9 @@ function fetchElementAndParent(highlights) {
 // Example usage:
 console.log("calling func")
 
-
 function createNeuroLearnElement(highlights) {
     const container = document.createElement('div');
-    container.style.background = 'linear-gradient(#8B5DF8, white)';  // Gradient from purple to white
+    container.style.background = 'linear-gradient(#13142f, black)';  // Gradient from purple to white
     container.style.padding = '10px';
     container.style.borderRadius = '10px';
     container.style.width = '300px';  // Adjust width as needed
@@ -228,6 +174,9 @@ function createNeuroLearnElement(highlights) {
     blobImage.id = 'blob_image';
     blobImage.src = 'https://gist.githubusercontent.com/ColabDog/be2c2c3dae7d31fd668783c480e7ebec/raw/d63bc5aaa982da97bf083b391ca54638b6fbc4f7/blue_blob.svg';
     blobImage.alt = 'Blob SVG';
+
+    // Add CSS animation to make the SVG zoom in and out
+    blobImage.style.animation = 'zoomInOut 2s infinite';
 
     blobSvg.appendChild(blobImage);
     titleContainer.appendChild(blobSvg);
@@ -259,7 +208,7 @@ function createNeuroLearnElement(highlights) {
         const percentage = document.createElement('span');
         percentage.textContent = index === 0 ? '75%' : '20%';
         percentage.style.background = index === 0 ? 'limegreen' : 'red';
-        percentage.style.borderRadius = '50%';
+        percentage.style.borderRadius = '5px';
         percentage.style.padding = '5px 5px';
         percentage.style.color = 'white';
         percentage.style.fontSize = '18px';
@@ -280,8 +229,7 @@ function createNeuroLearnElement(highlights) {
     flexDiv.style.justifyContent = 'space-between';
     flexDiv.style.alignItems = 'center';
 
-    const aiCoach = document.createElement('input');
-    aiCoach.type = 'text';
+    const aiCoach = document.createElement('textarea');
     aiCoach.style.background = 'rgba(255, 255, 255, 0.8)';
     aiCoach.style.borderRadius = '20px';
     aiCoach.style.padding = '10px 20px';
@@ -289,7 +237,14 @@ function createNeuroLearnElement(highlights) {
     aiCoach.placeholder = 'Ask your AI coach...';
     aiCoach.style.fontSize = '20px';
     aiCoach.style.textAlign = 'center';
+    aiCoach.style.overflow = 'hidden';
+    aiCoach.style.resize = 'none';
 
+    // Event listener to auto-expand the textarea
+    aiCoach.addEventListener('input', function () {
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight) + 'px';
+    });
     const aiCoachButton = document.createElement('button');
     aiCoachButton.innerHTML = '&#x27A4;'; // Unicode for rightwards arrow
     aiCoachButton.style.background = '#8B5DF8';
@@ -297,6 +252,7 @@ function createNeuroLearnElement(highlights) {
     aiCoachButton.style.borderRadius = '20px';
     aiCoachButton.style.padding = '10px 20px';
     aiCoachButton.style.marginTop = '15px';
+    aiCoachButton.style.marginLeft = '10px'; // Added padding between text area and the button
     aiCoachButton.style.fontSize = '20px';
     aiCoachButton.style.border = 'none';
     aiCoachButton.style.cursor = 'pointer';
