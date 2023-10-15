@@ -17,11 +17,12 @@ def create_vector_db_from_youtube_url(video_url: str) -> FAISS:
 
     db = FAISS.from_documents(docs, embeddings)
     return db
+load_dotenv()
 
-video_url = os.getenv('VIDEO_URL')
-embeddings = OpenAIEmbeddings()
-db = create_vector_db_from_youtube_url(video_url)
+video_url = os.getenv('VIDEO_URL', "https://www.youtube.com/watch?v=pMFv6liWK4M")
 openai_api_key = os.getenv("OPENAI_API_KEY")
+embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
+db = create_vector_db_from_youtube_url(video_url)
 
 
 
