@@ -205,7 +205,7 @@ function createNeuroLearnElement() {
 
     const blobImage = document.createElement('img');
     blobImage.id = 'blob_image';
-    blobImage.src = 'assets/blob.svg';
+    blobImage.src = 'https://gist.githubusercontent.com/ColabDog/be2c2c3dae7d31fd668783c480e7ebec/raw/14f5ebb6957e5ace159b5d05e986f36e2a32f801/blue_blob.svg';
     blobImage.alt = 'Blob SVG';
 
     blobSvg.appendChild(blobImage);
